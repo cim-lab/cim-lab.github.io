@@ -160,16 +160,19 @@
   <script>
     function renderHeader(targetId){
       const el = document.getElementById(targetId);
+      const meta = document.querySelector('meta[name="site-base"]');
+      const BASE = (meta && meta.getAttribute('content')) ? meta.getAttribute('content') : '/';
+      const base = BASE.endsWith('/') ? BASE : BASE + '/';	  
       el.innerHTML = `
         <header class="site-header">
           <div class="container nav-wrap">
             <a class="brand" href="/"><div class="brand-logo"></div><div class="brand-name">Cognitive Intelligence Motion (CIM) Lab</div></a>
             <nav><ul>
                 <li><a href="/" aria-current="page">Home</a></li>
-                <li><a href="/research.html">Research</a></li>
-                <li><a href="/publications.html">Publications</a></li>
-                <li><a href="/projects.html">Projects</a></li>
-                <li><a href="/team.html">Team</a></li>
+                <li><a href="${base}research.html">Research</a></li>
+                <li><a href="${base}publications.html">Publications</a></li>
+                <li><a href="${base}projects.html">Projects</a></li>
+                <li><a href="${base}team.html">Team</a></li>
             </ul></nav>
           </div>
         </header>`;
