@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Professor Doe Lab | Home</title>
-  <meta name="description" content="Academic website for Professor Doe and Research Group" />
+  <title>Professor Sookhak Lab | Home</title>
+  <meta name="description" content="Academic website for Professor Sookhak and Research Group" />
 
   <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,8 +127,8 @@
   <main class="container hero" id="main-content">
     <section class="slider" aria-roledescription="carousel" aria-label="Research Highlights" tabindex="0">
       <div class="slides" id="slides">
-        <div class="slide"><img src="https://images.unsplash.com/photo-1470790376778-a9fbc86d70e2?q=80&w=2000&auto=format&fit=crop" alt="Campus view"/></div>
-        <div class="slide"><img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=2000&auto=format&fit=crop" alt="Lab research"/></div>
+        <div class="slide"><img src="banner1.jpg" alt="Campus view"/></div>
+        <div class="slide"><img src="banner2.jpg" alt="Lab research"/></div>
         <div class="slide"><img src="https://images.unsplash.com/photo-1487954152956-cd39bae2eb8f?q=80&w=2000&auto=format&fit=crop" alt="City mobility"/></div>
       </div>
       <div class="slider-controls"><button class="ctrl-btn" id="prevBtn">&#10094;</button><button class="ctrl-btn" id="nextBtn">&#10095;</button></div>
@@ -137,7 +137,7 @@
 
     <div class="hero-card">
       <div>
-        <h1>Professor Jane Doe Research Group</h1>
+        <h1>Professor Mehdi Sookhak Research Group</h1>
         <p>AI • Intelligent Transportation • Geospatial Systems • Privacy-Preserving ML</p>
       </div>
       <div class="hero-badges">
@@ -163,7 +163,7 @@
       el.innerHTML = `
         <header class="site-header">
           <div class="container nav-wrap">
-            <a class="brand" href="/"><div class="brand-logo"></div><div class="brand-name">Doe Lab</div></a>
+            <a class="brand" href="/"><div class="brand-logo"></div><div class="brand-name">Sookhak Lab</div></a>
             <nav><ul>
                 <li><a href="/" aria-current="page">Home</a></li>
                 <li><a href="/research.html">Research</a></li>
@@ -181,8 +181,8 @@
         <footer class="site-footer" id="contact">
           <div class="container footer-grid">
             <div class="footer-card"><h4>About the Lab</h4><p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p></div>
-            <div class="footer-card"><h4>Contact</h4><p class="small">Prof. Jane Doe<br>Department of Computer Science<br>University of Somewhere<br>Email: <a href="mailto:jane.doe@university.edu">jane.doe@university.edu</a></p></div>
-            <div class="footer-card"><h4>Find Us</h4><p class="small muted">Office: Room 420<br>Lab: Suite 210</p><p class="small">© ${year} Doe Lab</p></div>
+            <div class="footer-card"><h4>Contact</h4><p class="small">Prof. Mehdi Sookhak<br>Department of Computer Science<br>University of Somewhere<br>Email: <a href="mailto:jane.doe@university.edu">jane.doe@university.edu</a></p></div>
+            <div class="footer-card"><h4>Find Us</h4><p class="small muted">Office: Room 420<br>Lab: Suite 210</p><p class="small">© ${year} Sookhak Lab</p></div>
           </div>
         </footer>`;
     }
@@ -206,7 +206,14 @@
 
     const newsData = [
       {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted to IEEE CogMI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
-      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA-enhanced Transformers', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'}
+      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA-enhanced Transformers', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'},
+      {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted to IEEE CogMI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
+      {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted to IEEE CogMI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
+      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA-enhanced Transformers', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'},
+      {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted to IEEE CogMI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
+      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA-enhanced Transformers', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'},
+      {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted in AAAI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
+      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'}
     ];
     const newsList=document.getElementById('newsList');
     newsData.forEach(item=>{
