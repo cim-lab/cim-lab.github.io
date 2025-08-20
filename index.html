@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Professor Doe Lab | Home</title>
+  <meta name="description" content="Academic website for Professor Doe and Research Group" />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #ffffff;           /* light background */
+      --bg-elev: #f4f6fb;      /* elevated surface */
+      --card: #ffffff;
+      --text: #212121;
+      --muted: #555;
+      --brand: #1976d2;        /* bright blue */
+      --brand-2: #f50057;      /* pink accent */
+      --accent: #ff9800;       /* orange accent */
+      --ring: rgba(25,118,210,.35);
+      --shadow: 0 6px 20px rgba(0,0,0,.15);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+    }
+    html, body{ height: 100%; }
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text); background: linear-gradient(180deg, #e3f2fd 0%, #fff 100%);
+    }
+    a{ color: inherit; text-decoration: none; }
+    .container{ width: min(1200px, 92%); margin-inline:auto; }
+
+    /* Shared Header */
+    header.site-header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px);
+      background: #ffffffd9;
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-wrap{ display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .brand-logo{ width:42px; height:42px; border-radius: 12px; background:
+      linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: var(--shadow);
+    }
+    .brand-name{ font-weight: 700; letter-spacing: .3px; }
+
+    nav ul{ list-style: none; display:flex; gap: 8px; margin:0; padding:0; }
+    nav a{ padding:10px 14px; border-radius: 10px; color: var(--text); font-weight: 600; }
+    nav a:hover, nav a[aria-current="page"]{
+      color: var(--brand); background: rgba(25,118,210,.12);
+    }
+
+    /* Hero / Slider */
+    .hero{ padding: 28px 0 8px; }
+    .slider{
+      position: relative; aspect-ratio: 16/6; border-radius: var(--radius-xl); overflow: hidden;
+      background: #e1f5fe; box-shadow: var(--shadow);
+    }
+    .slides{ display: flex; width:100%; height:100%; transition: transform .8s cubic-bezier(.2,.6,.2,1); }
+    .slide{ min-width: 100%; height:100%; position: relative; }
+    .slide img{ width:100%; height:100%; object-fit: cover; }
+
+    .slider-controls{ position:absolute; inset:0; display:flex; align-items:center; justify-content: space-between; padding: 0 10px; pointer-events:none; }
+    .ctrl-btn{ pointer-events:auto; background: #ffffffcc; border: 1px solid #ddd; width:44px; height:44px; border-radius: 12px; display:grid; place-items:center; cursor:pointer; }
+    .ctrl-btn:hover{ background: #ffffff; }
+
+    .dots{ position:absolute; left:50%; bottom:14px; transform: translateX(-50%); display:flex; gap:8px; }
+    .dot{ width:10px; height:10px; border-radius: 50%; background: #bbb; cursor:pointer; }
+    .dot.active{ background: var(--brand); }
+
+    /* Intro card */
+    .hero-card{
+      margin-top: -58px; position: relative; z-index: 5; 
+      background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-xl);
+      padding: 22px; display:flex; gap: 18px; align-items:center; box-shadow: var(--shadow);
+    }
+    .hero-card h1{ font-size: clamp(1.4rem, 1.4rem + 1.5vw, 2.2rem); margin: 0 0 4px; }
+    .hero-card p{ margin: 0; color: var(--muted); }
+    .hero-badges{ margin-left:auto; display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{ display:inline-flex; align-items:center; gap:10px; padding: 10px 14px; border-radius: 12px; font-weight: 700; background: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%); color:#fff; border: 0; cursor:pointer; box-shadow: var(--shadow); }
+
+    /* News & Updates */
+    section.news{ padding: 36px 0 70px; }
+    .section-head{ display:flex; align-items:baseline; justify-content: space-between; gap:12px; margin-bottom: 16px; }
+    .section-head h2{ margin:0; font-size: clamp(1.1rem, .9rem + 1.2vw, 1.8rem); }
+    .section-head a{ color: var(--brand); font-weight: 600; }
+
+    .news-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .news-list{ grid-column: 1 / -1; display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 980px){ .news-list{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px){ .news-list{ grid-template-columns: 1fr; } }
+
+    .news-card{
+      background: #fafafa;
+      border: 1px solid #ddd; border-radius: var(--radius-lg);
+      padding: 16px; display:flex; gap: 14px; align-items:flex-start; position:relative; overflow:hidden;
+    }
+    .news-card:hover{ outline: 1px solid var(--brand); box-shadow: var(--shadow); }
+    .news-card time{ font-size:.85rem; color: var(--muted); }
+    .news-card h3{ margin:.3rem 0 .25rem; font-size: 1.05rem; }
+    .news-card p{ margin:.2rem 0 0; color: #333; }
+    .tag{ font-size:.72rem; font-weight:700; color:#fff; background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      padding:6px 10px; border-radius: 999px; position:absolute; right: 10px; top: 10px; }
+
+    /* Footer */
+    footer.site-footer{
+      background: #f4f6fb;
+      border-top: 1px solid #ddd; padding: 30px 0; margin-top: 20px;
+    }
+    .footer-grid{ display:grid; grid-template-columns: 2.2fr 1.2fr 1.2fr; gap: 18px; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+    .footer-card{ background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+    .footer-card h4{ margin: 0 0 10px; }
+    .muted{ color: var(--muted); }
+    .small{ font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container hero" id="main-content">
+    <section class="slider" aria-roledescription="carousel" aria-label="Research Highlights" tabindex="0">
+      <div class="slides" id="slides">
+        <div class="slide"><img src="https://images.unsplash.com/photo-1470790376778-a9fbc86d70e2?q=80&w=2000&auto=format&fit=crop" alt="Campus view"/></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=2000&auto=format&fit=crop" alt="Lab research"/></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1487954152956-cd39bae2eb8f?q=80&w=2000&auto=format&fit=crop" alt="City mobility"/></div>
+      </div>
+      <div class="slider-controls"><button class="ctrl-btn" id="prevBtn">&#10094;</button><button class="ctrl-btn" id="nextBtn">&#10095;</button></div>
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <div class="hero-card">
+      <div>
+        <h1>Professor Jane Doe Research Group</h1>
+        <p>AI • Intelligent Transportation • Geospatial Systems • Privacy-Preserving ML</p>
+      </div>
+      <div class="hero-badges">
+        <a href="#news" class="btn">Latest Updates</a>
+        <a href="#contact" class="btn" style="background: linear-gradient(90deg, var(--brand-2), var(--brand));">Contact</a>
+      </div>
+    </div>
+
+    <section class="news" id="news">
+      <div class="section-head">
+        <h2>News & Updates</h2>
+        <a href="#">View all →</a>
+      </div>
+      <div class="news-grid"><div class="news-list" id="newsList"></div></div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    function renderHeader(targetId){
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <header class="site-header">
+          <div class="container nav-wrap">
+            <a class="brand" href="/"><div class="brand-logo"></div><div class="brand-name">Doe Lab</div></a>
+            <nav><ul>
+                <li><a href="/" aria-current="page">Home</a></li>
+                <li><a href="/research.html">Research</a></li>
+                <li><a href="/publications.html">Publications</a></li>
+                <li><a href="/projects.html">Projects</a></li>
+                <li><a href="/team.html">Team</a></li>
+            </ul></nav>
+          </div>
+        </header>`;
+    }
+    function renderFooter(targetId){
+      const year = new Date().getFullYear();
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <footer class="site-footer" id="contact">
+          <div class="container footer-grid">
+            <div class="footer-card"><h4>About the Lab</h4><p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p></div>
+            <div class="footer-card"><h4>Contact</h4><p class="small">Prof. Jane Doe<br>Department of Computer Science<br>University of Somewhere<br>Email: <a href="mailto:jane.doe@university.edu">jane.doe@university.edu</a></p></div>
+            <div class="footer-card"><h4>Find Us</h4><p class="small muted">Office: Room 420<br>Lab: Suite 210</p><p class="small">© ${year} Doe Lab</p></div>
+          </div>
+        </footer>`;
+    }
+    renderHeader('site-header');
+    renderFooter('site-footer');
+  </script>
+
+  <script>
+    const slidesEl = document.getElementById('slides');
+    const dotsEl = document.getElementById('dots');
+    const total = slidesEl.children.length;
+    let idx = 0; let timer = null; const interval = 5000;
+    function go(n){ idx = (n+total)%total; slidesEl.style.transform = `translateX(-${idx*100}%)`; [...dotsEl.children].forEach((d,i)=> d.classList.toggle('active', i===idx)); }
+    function next(){ go(idx+1); }
+    function prev(){ go(idx-1); }
+    for(let i=0;i<total;i++){ const d=document.createElement('button'); d.className='dot'; d.addEventListener('click', ()=>{ go(i); restart(); }); dotsEl.appendChild(d);} go(0);
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ next(); restart(); });
+    document.getElementById('prevBtn').addEventListener('click', ()=>{ prev(); restart(); });
+    function start(){ timer=setInterval(next, interval);} function stop(){ clearInterval(timer);} function restart(){stop(); start();}
+    const slider=document.querySelector('.slider'); slider.addEventListener('mouseenter', stop); slider.addEventListener('mouseleave', start); start();
+
+    const newsData = [
+      {date:'Aug 15, 2025', tag:'Award', title:'Paper accepted to IEEE CogMI 2025', desc:'Our work on privacy-preserving text generation for ITS was accepted.', url:'news/cogmi-2025-acceptance.html'},
+      {date:'Jul 28, 2025', tag:'Preprint', title:'New arXiv preprint on LoRA-enhanced Transformers', desc:'We propose a parameter-efficient model for network traffic prediction.', url:'news/lora-transformers-preprint.html'}
+    ];
+    const newsList=document.getElementById('newsList');
+    newsData.forEach(item=>{
+      const a=document.createElement('a'); a.href=item.url; a.target='_blank'; a.className='news-card';
+      a.innerHTML=`<span class="tag">${item.tag}</span><div><time>${item.date}</time><h3>${item.title}</h3><p>${item.desc}</p></div>`;
+      newsList.appendChild(a);
+    });
+  </script>
+</body>
+</html>
