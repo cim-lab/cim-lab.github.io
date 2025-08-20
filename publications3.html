@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CIM Lab — Publications</title>
+
+  <!-- If your site is served from a subfolder (e.g., GitHub Pages project site),
+       set this to your repo path like "/my-lab-site/". Keep "/" if at domain root. -->
+  <meta name="site-base" content="/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-elev: #f4f6fb;
+      --card: #ffffff;
+      --text: #212121;
+      --muted: #555;
+      --brand: #1976d2;    /* bright blue */
+      --brand-2: #f50057;  /* pink */
+      --accent: #ff9800;   /* orange */
+      --border: #e6e8ee;
+      --shadow: 0 6px 20px rgba(0,0,0,.12);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      color: var(--text);
+      background: linear-gradient(180deg, #e3f2fd 0%, #fff 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* Shared Header */
+    header.site-header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px);
+      background: #ffffffd9; border-bottom: 1px solid #ddd;
+    }
+    .nav-wrap{ display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .brand-logo{ width:42px; height:42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: var(--shadow);
+    }
+    .brand-name{ font-weight: 700; letter-spacing: .3px; }
+    nav ul{ list-style: none; display:flex; gap: 8px; margin:0; padding:0; }
+    nav a{ padding:10px 14px; border-radius: 10px; color: var(--text); font-weight: 600; }
+    nav a:hover, nav a[aria-current="page"]{ color: var(--brand); background: rgba(25,118,210,.12); }
+
+    /* Page */
+    main { padding: 24px 0 40px; }
+
+    .page-title {
+      display:flex; align-items:flex-end; justify-content: space-between; gap: 16px;
+      margin: 6px 0 16px;
+    }
+    .page-title h1 { margin:0; font-size: clamp(1.4rem, 1rem + 2vw, 2rem); }
+    .muted { color: var(--muted); }
+
+    /* Filter Bar */
+    .filters {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); padding: 14px; display: grid; gap: 10px;
+      grid-template-columns: 1fr 1fr 2fr; align-items: center; margin-bottom: 18px;
+    }
+    @media (max-width: 800px){ .filters{ grid-template-columns: 1fr; } }
+    .filters label { font-weight: 600; font-size: .95rem; }
+    .controls { display:flex; gap: 10px; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid var(--border); background: #fafafa; padding: 8px 12px; border-radius: 999px;
+      font-weight: 600; cursor: pointer; user-select: none;
+    }
+    .chip.active {
+      background: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%);
+      color: #fff; border-color: transparent; box-shadow: var(--shadow);
+    }
+    .select, .search {
+      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border);
+      background: #fff; font: inherit;
+    }
+
+    /* Publication list */
+    .year { margin: 28px 0 10px; font-size: 1.2rem; border-left: 4px solid var(--brand); padding-left: 10px; }
+    ul.pubs { list-style:none; padding:0; margin:0; }
+    li.pub {
+      background: var(--card); padding: 14px 16px; margin: 12px 0;
+      border: 1px solid var(--border); border-radius: 10px; transition: transform .06s ease;
+    }
+    li.pub:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .pub-title { font-size: 1.05rem; margin-bottom: 6px; font-weight: 700; }
+    .pub-title a { color: var(--brand); }
+    .pub-title a:hover { text-decoration: underline; }
+    .pub-meta { color: var(--muted); font-size: .95rem; }
+    .pub-venue { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+
+    /* Footer */
+    footer.site-footer{
+      background: #f4f6fb; border-top: 1px solid #ddd; padding: 30px 0; margin-top: 28px;
+    }
+    .footer-grid{ display:grid; grid-template-columns: 2.2fr 1.2fr 1.2fr; gap: 18px; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+    .footer-card{ background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+    .footer-card h4{ margin: 0 0 10px; }
+	.sortbar{
+	  margin: 8px 0 14px;
+	  color: #6c4a1a; /* brownish like screenshot; tweak if you want */
+	  font-weight: 600;
+	}
+	.sortbar a{
+	  color: #6c4a1a;
+	  text-decoration: none;
+	}
+	.sortbar a:hover{ text-decoration: underline; }
+
+	.group-title{
+	  margin: 26px 0 8px;
+	  padding-left: 10px;
+	  border-left: 4px solid var(--brand);
+	  font-size: 1.15rem;
+	}
+	.yearbar {
+	  margin: 6px 0 18px;
+	  font-weight: 600;
+	  color: var(--brand);
+	}
+	.yearbar a {
+	  margin: 0 6px;
+	  color: var(--brand);
+	  text-decoration: none;
+	}
+	.yearbar a:hover {
+	  text-decoration: underline;
+	}
+	.yearbar a.active {
+	  font-weight: 800;
+	  text-decoration: underline;
+	}
+
+  </style>
+</head>
+<body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+
+  <main class="container">
+    <div class="page-title">
+      <h1>Publications</h1>
+      <div class="muted" id="count"></div>
+    </div>
+
+    <!-- Filters -->
+    <section class="filters" aria-label="Publications filters">
+      <div>
+        <label for="yearSelect">Year</label>
+        <select id="yearSelect" class="select" aria-label="Filter by year">
+          <option value="all">All years</option>
+          <!-- years appended by JS -->
+        </select>
+      </div>
+
+      <div>
+        <label>Type</label>
+        <div class="controls" role="group" aria-label="Filter by publication type">
+          <button class="chip active" data-type="all" aria-pressed="true">All</button>
+          <button class="chip" data-type="journal" aria-pressed="false">Journal</button>
+          <button class="chip" data-type="conference" aria-pressed="false">Conference</button>
+          <button class="chip" data-type="other" aria-pressed="false">Other</button>
+        </div>
+      </div>
+
+      <div>
+        <label for="search">Search</label>
+        <input id="search" class="search" type="search" placeholder="Title, author, venue..." />
+      </div>
+    </section>
+
+	<!-- Sort Bar (link style like your screenshot) -->
+	<nav class="sortbar" aria-label="Publication categorization">
+	  <a href="#" data-group="year">Sort by year</a> |
+	  <a href="#" data-group="topic">Sort by topic</a> |
+	  <a href="#" data-group="venue">Sort by venue</a> |
+	  <a href="#" data-group="type">Sort by type</a>
+	</nav>
+	<nav class="yearbar" aria-label="Filter by year">
+	</nav>
+    <!-- ===== Existing content (keep your current lists) ===== -->
+    <!-- You can paste your existing year sections here; the script will auto-tag them -->
+	
+	<div id="pubs-root">
+	  <ul class="pubs">
+		<li class="pub" data-topic="Privacy">
+		  <div class="pub-title"><a href="#">RL + MoE for Urban Mobility</a></div>
+		  <div class="pub-meta">A. Rezaei, J. Doe</div>
+		  <div class="pub-venue">Proceedings of IEEE CogMI Conference · 2025</div>
+		</li>
+		<!-- more li.pub ... -->
+	  </ul>
+	</div>
+
+	<script>
+	  // --- Helpers ---
+	  function inferType(venueText) {
+		const v = (venueText || "").toLowerCase();
+		if (/(conference|proceedings|symposium|workshop)/.test(v)) return 'Conference';
+		if (/(journal|transactions|magazine|article)/.test(v)) return 'Journal';
+		return 'Other';
+	  }
+	  function extractYear(venueText) {
+		const m = (venueText || '').match(/(19|20)\\d{2}/);
+		return m ? m[0] : 'Unknown';
+	  }
+	  function extractVenueName(venueText) {
+		if (!venueText) return 'Unknown Venue';
+		// Split on bullets/dots or a year and take the first chunk as the venue label
+		const firstChunk = venueText.split('·')[0]
+									.split('|')[0]
+									.split('—')[0]
+									.split('- 20')[0]
+									.trim();
+		return firstChunk || 'Unknown Venue';
+	  }
+
+	  // Collect all publications from existing markup
+	  const root = document.getElementById('pubs-root');
+	  const allItems = Array.from(root.querySelectorAll('li.pub')).map(li => {
+		const venueEl = li.querySelector('.pub-venue');
+		const venueText = venueEl ? venueEl.textContent.trim() : '';
+		return {
+		  el: li,
+		  title: (li.querySelector('.pub-title')?.textContent || '').trim(),
+		  venueText,
+		  year: extractYear(venueText),
+		  type: inferType(venueText),
+		  venue: extractVenueName(venueText),
+		  topic: li.dataset.topic ? li.dataset.topic.trim() : 'General'
+		};
+	  });
+
+	  // Clear root; we will render groups dynamically
+	  function clearRoot() {
+		// Keep one container UL to avoid layout jumps
+		root.innerHTML = '';
+	  }
+
+	  // Group by a key and render
+	  function renderGroupedBy(key) {
+		clearRoot();
+
+		// Build grouped map
+		const groups = new Map();
+		for (const item of allItems) {
+		  const k = item[key] || 'Unknown';
+		  if (!groups.has(k)) groups.set(k, []);
+		  groups.get(k).push(item);
+		}
+
+		// Determine group order
+		let order = Array.from(groups.keys());
+		if (key === 'year') {
+		  // numeric desc, Unknown last
+		  order.sort((a, b) => {
+			if (a === 'Unknown') return 1;
+			if (b === 'Unknown') return -1;
+			return parseInt(b,10) - parseInt(a,10);
+		  });
+		} else {
+		  order.sort((a,b) => a.localeCompare(b));
+		}
+
+		// Render
+		for (const groupKey of order) {
+		  const h = document.createElement('h2');
+		  h.className = 'group-title';
+		  h.textContent = groupKey;
+		  root.appendChild(h);
+
+		  const ul = document.createElement('ul');
+		  ul.className = 'pubs';
+		  groups.get(groupKey).forEach(item => {
+			ul.appendChild(item.el);
+		  });
+		  root.appendChild(ul);
+		}
+
+		// Update active aria state in sortbar
+		document.querySelectorAll('.sortbar a').forEach(a => {
+		  const active = a.dataset.group === key;
+		  a.setAttribute('aria-current', active ? 'true' : 'false');
+		  a.style.fontWeight = active ? '800' : '600';
+		  a.style.textDecoration = active ? 'underline' : 'none';
+		});
+	  }
+	// Build Year filter bar
+	const yearbar = document.querySelector('.yearbar');
+	const allYears = [...new Set(allItems.map(i => i.year).filter(y => y !== 'Unknown'))]
+					  .sort((a,b) => parseInt(b) - parseInt(a));
+
+	function renderYearbar() {
+	  yearbar.innerHTML = '';
+	  allYears.forEach(y => {
+		const a = document.createElement('a');
+		a.href = '#'; a.textContent = y; a.dataset.year = y;
+		yearbar.appendChild(a);
+		yearbar.appendChild(document.createTextNode(' | '));
+	  });
+	  const allLink = document.createElement('a');
+	  allLink.href = '#'; allLink.textContent = 'All'; allLink.dataset.year = 'all';
+	  yearbar.appendChild(allLink);
+
+	  // Wire up clicks
+	  yearbar.querySelectorAll('a').forEach(a => {
+		a.addEventListener('click', e => {
+		  e.preventDefault();
+		  applyYearFilter(a.dataset.year);
+		});
+	  });
+	}
+
+	let activeYear = 'all';
+	function applyYearFilter(y) {
+	  activeYear = y;
+	  // hide/show groups
+	  document.querySelectorAll('#pubs-root ul.pubs li.pub').forEach(li => {
+		li.style.display = (y==='all' || li.dataset.year === y) ? '' : 'none';
+	  });
+	  document.querySelectorAll('.yearbar a').forEach(a => {
+		a.classList.toggle('active', a.dataset.year === y);
+	  });
+	}
+
+	// Build once
+	renderYearbar();
+	applyYearFilter('all');
+
+	  // Wire up the sort bar
+	  document.querySelectorAll('.sortbar a').forEach(a => {
+		a.addEventListener('click', (e) => {
+		  e.preventDefault();
+		  renderGroupedBy(a.dataset.group);
+		});
+	  });
+
+	  // Initial view (Year like your screenshot)
+	  renderGroupedBy('year');
+	</script>
+
+  </main>
+
+  <!-- Shared footer -->
+  <div id="site-footer"></div>
+
+  <!-- ===== Shared header/footer JS (same pattern as index) ===== -->
+  <script>
+    function renderHeader(targetId){
+      const el = document.getElementById(targetId);
+      const meta = document.querySelector('meta[name="site-base"]');
+      const BASE = (meta && meta.getAttribute('content')) ? meta.getAttribute('content') : '/';
+      const base = BASE.endsWith('/') ? BASE : BASE + '/';
+      el.innerHTML = `
+        <header class="site-header">
+          <div class="container nav-wrap">
+            <a class="brand" href="${base}index.html">
+              <div class="brand-logo"></div>
+              <div class="brand-name">Cognitive Intelligence Motion (CIM) Lab</div>
+            </a>
+            <nav aria-label="Primary">
+              <ul>
+                <li><a href="${base}index.html">Home</a></li>
+                <li><a href="${base}research.html">Research</a></li>
+                <li><a href="${base}publications.html" aria-current="page">Publications</a></li>
+                <li><a href="${base}projects.html">Projects</a></li>
+                <li><a href="${base}team.html">Team</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>`;
+    }
+    function renderFooter(targetId){
+      const year = new Date().getFullYear();
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <footer class="site-footer" id="contact">
+          <div class="container footer-grid">
+            <div class="footer-card">
+              <h4>About the Lab</h4>
+              <p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p>
+            </div>
+            <div class="footer-card">
+              <h4>Contact</h4>
+              <p class="muted">Prof. Mehdi Sookhak<br>Department of Computer Science<br>Texas A&M University–Corpus Christi<br>
+              Email: <a href="mailto:sookhak.mehdi@tamucc.edu">sookhak.mehdi@tamucc.edu</a></p>
+            </div>
+            <div class="footer-card">
+              <h4>Find Us</h4>
+              <p class="muted">Office: Room 420<br>Lab: Suite 210</p>
+              <p class="muted">© ${year} CIM Lab</p>
+            </div>
+          </div>
+        </footer>`;
+    }
+    renderHeader('site-header');
+    renderFooter('site-footer');
+  </script>
+
+  <!-- ===== Publications filtering logic ===== -->
+  <script>
+    // 1) Move your existing publication HTML from your old file into #pubs-root.
+    //    If this file is replacing your old one, you can paste it where indicated above.
+    //    The script below will auto-annotate items for filtering.
+
+    // Helper to classify type based on venue text
+    function inferType(venueText) {
+      const v = venueText.toLowerCase();
+      if (v.includes('inproceedings') || v.includes('conference') || v.includes('symposium') || v.includes('workshop')) return 'conference';
+      if (v.includes('article') || v.includes('journal') || v.includes('transactions') || v.includes('magazine')) return 'journal';
+      return 'other';
+    }
+
+    // Annotate each li.pub with data-year and data-type
+    const root = document.getElementById('pubs-root');
+    const yearHeadings = Array.from(root.querySelectorAll('h2.year'));
+    const items = [];
+    yearHeadings.forEach(h => {
+      const year = (h.textContent || '').trim();
+      const list = h.nextElementSibling;
+      if (!list || !list.classList.contains('pubs')) return;
+      list.querySelectorAll('li.pub').forEach(li => {
+        const venueEl = li.querySelector('.pub-venue');
+        const venueText = venueEl ? venueEl.textContent.trim() : '';
+        const type = inferType(venueText);
+        li.dataset.year = year;
+        li.dataset.type = type;
+        items.push(li);
+      });
+    });
+
+    // Populate year dropdown (unique years, desc)
+    const years = [...new Set(items.map(li => li.dataset.year))].sort((a,b)=> b.localeCompare(a));
+    const yearSelect = document.getElementById('yearSelect');
+    years.forEach(y => {
+      const opt = document.createElement('option');
+      opt.value = y; opt.textContent = y;
+      yearSelect.appendChild(opt);
+    });
+
+    // Type chips
+    const chips = Array.from(document.querySelectorAll('.chip'));
+    let activeType = 'all';
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
+        chip.classList.add('active'); chip.setAttribute('aria-pressed','true');
+        activeType = chip.dataset.type;
+        applyFilters();
+      });
+    });
+
+    // Year change
+    yearSelect.addEventListener('change', applyFilters);
+
+    // Search
+    const search = document.getElementById('search');
+    search.addEventListener('input', applyFilters);
+
+    // Filtering
+    function applyFilters() {
+      const y = yearSelect.value;                 // "all" or a year
+      const q = search.value.trim().toLowerCase();// query
+      let visibleCount = 0;
+
+      // Show/hide items
+      items.forEach(li => {
+        const okYear = (y === 'all') || (li.dataset.year === y);
+        const okType = (activeType === 'all') || (li.dataset.type === activeType);
+        const hay = (li.textContent || '').toLowerCase();
+        const okSearch = q === '' || hay.includes(q);
+        const show = okYear && okType && okSearch;
+        li.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      // Hide empty year sections
+      yearHeadings.forEach(h => {
+        const list = h.nextElementSibling;
+        if (!list || !list.classList.contains('pubs')) return;
+        const anyShown = Array.from(list.querySelectorAll('li.pub')).some(li => li.style.display !== 'none');
+        h.style.display = anyShown ? '' : 'none';
+        list.style.display = anyShown ? '' : 'none';
+      });
+
+      // Count
+      document.getElementById('count').textContent = `${visibleCount} item${visibleCount===1?'':'s'}`;
+    }
+
+    // Initial filter state
+    applyFilters();
+  </script>
+</body>
+</html>

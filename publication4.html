@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab — Publications</title>
+
+  <!-- If served from a subfolder (e.g., GitHub Pages project site), set to "/your-repo/". Keep "/" if at domain root. -->
+  <meta name="site-base" content="/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-elev: #f4f6fb;
+      --card: #ffffff;
+      --text: #212121;
+      --muted: #555;
+      --brand: #1976d2;    /* bright blue */
+      --brand-2: #f50057;  /* pink */
+      --accent: #ff9800;   /* orange */
+      --border: #e6e8ee;
+      --shadow: 0 6px 20px rgba(0,0,0,.12);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+      color: var(--text);
+      background: linear-gradient(180deg, #e3f2fd 0%, #fff 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92%); margin-inline: auto; }
+
+    /* Shared Header */
+    header.site-header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px);
+      background: #ffffffd9; border-bottom: 1px solid #ddd;
+    }
+    .nav-wrap{ display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .brand-logo{ width:42px; height:42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: var(--shadow);
+    }
+    .brand-name{ font-weight: 700; letter-spacing: .3px; }
+    nav ul{ list-style: none; display:flex; gap: 8px; margin:0; padding:0; }
+    nav a{ padding:10px 14px; border-radius: 10px; color: var(--text); font-weight: 600; }
+    nav a:hover, nav a[aria-current="page"]{ color: var(--brand); background: rgba(25,118,210,.12); }
+
+    /* Page */
+    main { padding: 24px 0 40px; }
+    .page-title { display:flex; align-items:flex-end; justify-content: space-between; gap: 16px; margin: 6px 0 8px; }
+    .page-title h1 { margin:0; font-size: clamp(1.4rem, 1rem + 2vw, 2rem); }
+    .muted { color: var(--muted); }
+
+    /* Sort bar like screenshot */
+    .sortbar{
+      margin: 8px 0 10px;
+      color: #6c4a1a;        /* tweak if desired */
+      font-weight: 600;
+    }
+    .sortbar a{ color: #6c4a1a; text-decoration: none; }
+    .sortbar a:hover{ text-decoration: underline; }
+
+    /* Year bar */
+    .yearbar {
+      margin: 6px 0 18px;
+      font-weight: 600;
+      color: var(--brand);
+    }
+    .yearbar a {
+      margin: 0 6px;
+      color: var(--brand);
+      text-decoration: none;
+    }
+    .yearbar a:hover { text-decoration: underline; }
+    .yearbar a.active { font-weight: 800; text-decoration: underline; }
+
+    /* Publications list */
+    .group-title{
+      margin: 26px 0 8px;
+      padding-left: 10px;
+      border-left: 4px solid var(--brand);
+      font-size: 1.15rem;
+    }
+    ul.pubs { list-style:none; padding:0; margin:0; }
+    li.pub {
+      background: var(--card); padding: 14px 16px; margin: 12px 0;
+      border: 1px solid var(--border); border-radius: 10px; transition: transform .06s ease;
+    }
+    li.pub:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .pub-title { font-size: 1.05rem; margin-bottom: 6px; font-weight: 700; }
+    .pub-title a { color: var(--brand); }
+    .pub-title a:hover { text-decoration: underline; }
+    .pub-meta { color: var(--muted); font-size: .95rem; }
+    .pub-venue { color: var(--muted); font-size: .9rem; margin-top: 2px; }
+
+    /* Footer */
+    footer.site-footer{
+      background: #f4f6fb; border-top: 1px solid #ddd; padding: 30px 0; margin-top: 28px;
+    }
+    .footer-grid{ display:grid; grid-template-columns: 2.2fr 1.2fr 1.2fr; gap: 18px; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+    .footer-card{ background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+    .footer-card h4{ margin: 0 0 10px; }
+  </style>
+</head>
+<body>
+  <!-- Shared header -->
+  <div id="site-header"></div>
+
+  <main class="container">
+    <div class="page-title">
+      <h1>Publications</h1>
+      <div class="muted" id="count"></div>
+    </div>
+
+    <!-- Sort bar (like your screenshot) -->
+    <nav class="sortbar" aria-label="Publication categorization">
+      <a href="#" data-group="year">Sort by year</a> |
+      <a href="#" data-group="topic">Sort by topic</a> |
+      <a href="#" data-group="venue">Sort by venue</a> |
+      <a href="#" data-group="type">Sort by type</a>
+    </nav>
+
+    <!-- Year filter bar -->
+    <nav class="yearbar" aria-label="Filter by year"></nav>
+
+    <!-- Your publication items go here (replace samples with your real list) -->
+    <div id="pubs-root">
+      <!-- Sample entries — replace these with your content -->
+      <ul class="pubs">
+        <!-- 2025 -->
+        <li class="pub" data-topic="Privacy">
+          <div class="pub-title"><a href="#">RL + MoE for Urban Mobility</a></div>
+          <div class="pub-meta">A. Rezaei, J. Doe, M. Sookhak</div>
+          <div class="pub-venue">Proceedings of IEEE CogMI Conference · 2025</div>
+        </li>
+        <li class="pub" data-topic="Traffic Prediction">
+          <div class="pub-title"><a href="#">LoRA-Enhanced Transformers for Network Load</a></div>
+          <div class="pub-meta">A. Rezaei, X. Zhang</div>
+          <div class="pub-venue">IEEE Transactions on Intelligent Transportation Systems · Journal · 2025</div>
+        </li>
+
+        <!-- 2024 -->
+        <li class="pub" data-topic="Geospatial AI">
+          <div class="pub-title"><a href="#">Geospatial Transformers for Road Safety</a></div>
+          <div class="pub-meta">M. Sookhak, A. Rezaei</div>
+          <div class="pub-venue">CVPR Workshop on AI4Mobility · 2024</div>
+        </li>
+        <li class="pub" data-topic="RAG">
+          <div class="pub-title"><a href="#">RAG for Real-Time Edge Decisions</a></div>
+          <div class="pub-meta">A. Rezaei, L. Kim</div>
+          <div class="pub-venue">ACM Transactions on Sensor Networks · Journal · 2024</div>
+        </li>
+
+        <!-- 2023 -->
+        <li class="pub" data-topic="Sensors">
+          <div class="pub-title"><a href="#">Sensor Fusion for Urban Trajectories</a></div>
+          <div class="pub-meta">A. Rezaei, P. Singh</div>
+          <div class="pub-venue">IEEE ICC · Conference · 2023</div>
+        </li>
+        <li class="pub" data-topic="Privacy">
+          <div class="pub-title"><a href="#">Text-Only Perception for Privacy</a></div>
+          <div class="pub-meta">A. Rezaei, J. Doe</div>
+          <div class="pub-venue">Elsevier Computer Communications · Journal · 2023</div>
+        </li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- Shared footer -->
+  <div id="site-footer"></div>
+
+  <!-- ===== Shared header/footer JS (same pattern as index) ===== -->
+  <script>
+    function renderHeader(targetId){
+      const el = document.getElementById(targetId);
+      const meta = document.querySelector('meta[name="site-base"]');
+      const BASE = (meta && meta.getAttribute('content')) ? meta.getAttribute('content') : '/';
+      const base = BASE.endsWith('/') ? BASE : BASE + '/';
+      el.innerHTML = `
+        <header class="site-header">
+          <div class="container nav-wrap">
+            <a class="brand" href="${base}index.html">
+              <div class="brand-logo"></div>
+              <div class="brand-name">CIM Lab</div>
+            </a>
+            <nav aria-label="Primary">
+              <ul>
+                <li><a href="${base}index.html">Home</a></li>
+                <li><a href="${base}research.html">Research</a></li>
+                <li><a href="${base}publications.html" aria-current="page">Publications</a></li>
+                <li><a href="${base}projects.html">Projects</a></li>
+                <li><a href="${base}team.html">Team</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>`;
+    }
+    function renderFooter(targetId){
+      const year = new Date().getFullYear();
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <footer class="site-footer" id="contact">
+          <div class="container footer-grid">
+            <div class="footer-card">
+              <h4>About the Lab</h4>
+              <p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p>
+            </div>
+            <div class="footer-card">
+              <h4>Contact</h4>
+              <p class="muted">Prof. Jane Doe<br>Department of Computer Science<br>University of Somewhere<br>
+              Email: <a href="mailto:jane.doe@university.edu">jane.doe@university.edu</a></p>
+            </div>
+            <div class="footer-card">
+              <h4>Find Us</h4>
+              <p class="muted">Office: Room 420<br>Lab: Suite 210</p>
+              <p class="muted">© ${year} CIM Lab</p>
+            </div>
+          </div>
+        </footer>`;
+    }
+    renderHeader('site-header');
+    renderFooter('site-footer');
+  </script>
+
+  <!-- ===== Sorting + Year filter logic ===== -->
+  <script>
+    // --- Helpers ---
+    function inferType(venueText) {
+      const v = (venueText || "").toLowerCase();
+      if (/(conference|proceedings|symposium|workshop|icc|cvpr|neurips|aaai|infocom)/.test(v)) return 'Type: Conference';
+      if (/(journal|transactions|magazine|article|elsevier|springer|acm transactions|ieee transactions)/.test(v)) return 'Type: Journal';
+      return 'Type: Other';
+    }
+    function extractYear(venueText) {
+      const m = (venueText || '').match(/(19|20)\d{2}/);
+      return m ? m[0] : 'Unknown';
+    }
+    function extractVenueName(venueText) {
+      if (!venueText) return 'Venue: Unknown';
+      const firstChunk = venueText.split('·')[0].split('|')[0].split('—')[0].trim();
+      return 'Venue: ' + (firstChunk || 'Unknown');
+    }
+
+    // Collect items
+    const root = document.getElementById('pubs-root');
+    const allItems = Array.from(root.querySelectorAll('li.pub')).map(li => {
+      const venueEl = li.querySelector('.pub-venue');
+      const venueText = venueEl ? venueEl.textContent.trim() : '';
+      const year = extractYear(venueText);
+      const type = inferType(venueText);
+      const venue = extractVenueName(venueText);
+      li.dataset.year = year;            // store for filtering
+      li.dataset.type = type;            // e.g., "Type: Conference"
+      li.dataset.venue = venue;          // e.g., "Venue: IEEE CogMI ..."
+      li.dataset.topic = li.dataset.topic || 'Topic: General';
+      return {
+        el: li,
+        year,
+        type,
+        venue,
+        topic: 'Topic: ' + (li.dataset.topic.replace(/^Topic:\s*/,'') || 'General')
+      };
+    });
+
+    const countEl = document.getElementById('count');
+
+    // Clear initial static structure; we render groups dynamically
+    function clearRoot(){ root.innerHTML = ''; }
+
+    // Group by key and render
+    function renderGroupedBy(key) {
+      clearRoot();
+      const groups = new Map();
+      for (const item of allItems) {
+        const k = item[key] || (key==='year' ? 'Unknown' : `${key}: Unknown`);
+        if (!groups.has(k)) groups.set(k, []);
+        groups.get(k).push(item);
+      }
+      // Order groups
+      let order = Array.from(groups.keys());
+      if (key === 'year') {
+        order.sort((a, b) => {
+          if (a === 'Unknown') return 1;
+          if (b === 'Unknown') return -1;
+          return parseInt(b,10) - parseInt(a,10);
+        });
+      } else {
+        order.sort((a,b) => a.localeCompare(b));
+      }
+      // Render
+      let totalVisible = 0;
+      for (const g of order) {
+        const h = document.createElement('h2');
+        h.className = 'group-title';
+        h.textContent = g;
+        root.appendChild(h);
+        const ul = document.createElement('ul');
+        ul.className = 'pubs';
+        groups.get(g).forEach(item => { ul.appendChild(item.el); totalVisible++; });
+        root.appendChild(ul);
+      }
+      countEl.textContent = `${totalVisible} item${totalVisible===1?'':'s'}`;
+
+      // Update sortbar UI
+      document.querySelectorAll('.sortbar a').forEach(a => {
+        const active = a.dataset.group === key;
+        a.setAttribute('aria-current', active ? 'true' : 'false');
+        a.style.fontWeight = active ? '800' : '600';
+        a.style.textDecoration = active ? 'underline' : 'none';
+      });
+
+      // Re-apply year filter (so user can switch sort without losing year selection)
+      applyYearFilter(activeYear);
+    }
+
+    // Wire sortbar
+    document.querySelectorAll('.sortbar a').forEach(a => {
+      a.addEventListener('click', e => { e.preventDefault(); renderGroupedBy(a.dataset.group); });
+    });
+
+    // Build yearbar
+    const yearbar = document.querySelector('.yearbar');
+    const uniqueYears = [...new Set(allItems.map(i => i.year).filter(y => y !== 'Unknown'))]
+                        .sort((a,b) => parseInt(b) - parseInt(a));
+    function renderYearbar(){
+      yearbar.innerHTML = '';
+      uniqueYears.forEach((y, idx) => {
+        const link = document.createElement('a');
+        link.href = '#'; link.textContent = y; link.dataset.year = y;
+        yearbar.appendChild(link);
+        if (idx < uniqueYears.length - 1) yearbar.appendChild(document.createTextNode(' | '));
+      });
+      if (uniqueYears.length) yearbar.appendChild(document.createTextNode(' | '));
+      const all = document.createElement('a');
+      all.href = '#'; all.textContent = 'All'; all.dataset.year = 'all';
+      yearbar.appendChild(all);
+
+      yearbar.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', e => { e.preventDefault(); applyYearFilter(a.dataset.year); });
+      });
+    }
+
+    let activeYear = 'all';
+    function applyYearFilter(y){
+      activeYear = y;
+      // Show/hide items
+      const allLis = root.querySelectorAll('li.pub');
+      let visible = 0;
+      allLis.forEach(li => {
+        const show = (y === 'all') || (li.dataset.year === y);
+        li.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      // Hide empty rendered groups
+      root.querySelectorAll('.group-title').forEach(h => {
+        const ul = h.nextElementSibling;
+        if (!ul || !ul.classList.contains('pubs')) return;
+        const anyShown = Array.from(ul.querySelectorAll('li.pub')).some(li => li.style.display !== 'none');
+        h.style.display = anyShown ? '' : 'none';
+        ul.style.display = anyShown ? '' : 'none';
+      });
+      // UI state
+      yearbar.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.dataset.year === y));
+      countEl.textContent = `${visible} item${visible===1?'':'s'}`;
+    }
+
+    // Initial render
+    renderYearbar();
+    renderGroupedBy('year');   // default sort like your screenshot
+    applyYearFilter('all');    // default show all
+  </script>
+</body>
+</html>
