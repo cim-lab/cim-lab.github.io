@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | CIM Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --blue: #1a6eb5;
+      --blue-light: #2485d4;
+      --accent: #0aa0d6;
+      --gray-bg: #f5f7fa;
+      --gray-border: #dce1e9;
+      --gray-mid: #8a95a3;
+      --white: #ffffff;
+      --text: #1c2635;
+      --text-light: #4e5d6e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700; font-size: 16px;
+      color: #fff;
+      letter-spacing: -1px;
+    }
+    .logo-text {
+      font-size: 17px; font-weight: 600;
+      color: #fff; letter-spacing: .3px;
+    }
+    .logo-text span { color: var(--accent); }
+
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: .3px;
+      transition: color .2s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+    nav a.active {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 2px;
+    }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: var(--navy);
+      padding: 48px 40px 44px;
+      border-bottom: 3px solid var(--accent);
+    }
+    .page-hero h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 36px; font-weight: 700;
+      color: #fff;
+      letter-spacing: -.5px;
+    }
+    .page-hero p {
+      margin-top: 8px;
+      color: rgba(255,255,255,.6);
+      font-size: 15px; max-width: 580px;
+      line-height: 1.6;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-border);
+      padding: 0 40px;
+      display: flex; align-items: center; gap: 6px;
+      height: 52px;
+    }
+    .filter-btn {
+      padding: 5px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--gray-border);
+      background: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .filter-btn:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .filter-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      margin-bottom: 20px;
+      padding-left: 2px;
+    }
+
+    /* ── PROJECT CARD ── */
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 0;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: box-shadow .22s, transform .22s;
+    }
+    .project-card:hover {
+      box-shadow: 0 6px 28px rgba(26,110,181,.13);
+      transform: translateY(-2px);
+    }
+
+    /* LEFT: logo / image */
+    .card-logo {
+      background: #eef2f7;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      border-right: 1px solid var(--gray-border);
+      min-height: 110px;
+    }
+    .card-logo img {
+      max-width: 90px;
+      max-height: 70px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .logo-placeholder {
+      width: 72px; height: 56px;
+      background: var(--gray-border);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      color: var(--gray-mid);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .5px;
+      text-align: center;
+    }
+    /* coloured accent strip on left edge */
+    .project-card::before {
+      content: '';
+      display: none;
+    }
+    .project-card {
+      border-left: 4px solid var(--blue);
+    }
+    .project-card:nth-child(3n+1) { border-left-color: var(--blue); }
+    .project-card:nth-child(3n+2) { border-left-color: #0aa0d6; }
+    .project-card:nth-child(3n+3) { border-left-color: #1d7a5f; }
+
+    /* RIGHT: content */
+    .card-content {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title-row {
+      padding: 14px 20px 12px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 16px; font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .card-badge {
+      flex-shrink: 0;
+      font-size: 11px; font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 12px;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .badge-active { background: #e0f7ee; color: #1a7a52; }
+    .badge-completed { background: #e8eef5; color: #4a6080; }
+    .badge-ongoing { background: #fff4e0; color: #8a5a00; }
+
+    .card-body {
+      padding: 12px 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .card-desc {
+      font-size: 13.5px;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    .card-meta {
+      display: flex; align-items: center; gap: 14px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      font-size: 12px; color: var(--gray-mid);
+      display: flex; align-items: center; gap: 4px;
+    }
+    .meta-item svg { opacity: .65; }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 20px 14px;
+    }
+    .read-more {
+      font-size: 13px; font-weight: 600;
+      color: var(--blue-light);
+      text-decoration: none;
+      letter-spacing: .2px;
+      display: flex; align-items: center; gap: 4px;
+      transition: color .18s, gap .18s;
+    }
+    .read-more:hover {
+      color: var(--accent);
+      gap: 7px;
+    }
+    .read-more svg { transition: transform .18s; }
+    .read-more:hover svg { transform: translateX(2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 28px;
+      font-size: 12.5px;
+      color: var(--gray-mid);
+      border-top: 1px solid var(--gray-border);
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 0 16px; }
+      nav { display: none; }
+      .page-hero { padding: 32px 16px 28px; }
+      .filter-bar { padding: 0 16px; overflow-x: auto; }
+      main { padding: 24px 12px 60px; }
+      .project-card { grid-template-columns: 90px 1fr; }
+      .card-logo { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="https://cim-lab.github.io/" class="logo-area">
+    <div class="logo-mark">CIM</div>
+    <span class="logo-text"><span>CIM</span> Lab</span>
+  </a>
+  <nav>
+    <a href="https://cim-lab.github.io/">Home</a>
+    <a href="#" class="active">Projects</a>
+    <a href="#">Team</a>
+    <a href="#">Publications</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <h1>Research Projects</h1>
+  <p>Exploring AI-driven solutions across intelligent transportation, geospatial systems, and privacy-preserving machine learning.</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
+  <button class="filter-btn" onclick="filterCards('ai', this)">AI &amp; ML</button>
+  <button class="filter-btn" onclick="filterCards('transport', this)">Transportation</button>
+  <button class="filter-btn" onclick="filterCards('geo', this)">Geospatial</button>
+  <button class="filter-btn" onclick="filterCards('privacy', this)">Privacy</button>
+</div>
+
+<!-- MAIN -->
+<main>
+  <p class="section-label">6 Projects</p>
+
+  <!-- Card 1 -->
+  <div class="project-card" data-tag="ai privacy">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Federated Learning for Privacy-Preserving Traffic Prediction</span>
+        <span class="card-badge badge-active">Active</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Developing federated ML frameworks that enable collaborative model training across distributed traffic sensors without sharing raw data, preserving privacy while improving prediction accuracy.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2023 – Present
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            4 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="project-card" data-tag="transport ai">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Autonomous Vehicle Safety Verification in Mixed Traffic Environments</span>
+        <span class="card-badge badge-active">Active</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Formal verification and simulation-based testing of AV decision-making algorithms under adversarial and edge-case scenarios involving human drivers and vulnerable road users.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2022 – Present
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            3 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="project-card" data-tag="geo ai">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Deep Learning for Urban Geospatial Anomaly Detection</span>
+        <span class="card-badge badge-ongoing">Ongoing</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Applying spatiotemporal deep learning models to identify anomalous patterns in urban mobility data, supporting smart city infrastructure planning and incident response.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2022 – 2025
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            5 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4 -->
+  <div class="project-card" data-tag="privacy ai">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Differential Privacy Mechanisms for Location Data Sharing</span>
+        <span class="card-badge badge-active">Active</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Designing mathematically rigorous differential privacy algorithms that allow transportation agencies to share aggregate mobility statistics while providing provable privacy guarantees for individuals.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2024 – Present
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            2 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 5 -->
+  <div class="project-card" data-tag="transport geo">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Real-Time Multi-Modal Transit Optimization with Reinforcement Learning</span>
+        <span class="card-badge badge-ongoing">Ongoing</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Using deep reinforcement learning to dynamically re-route bus and ride-share fleets in response to real-time demand shifts, reducing average passenger wait times and carbon emissions.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2021 – 2024
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            6 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 6 -->
+  <div class="project-card" data-tag="geo transport">
+    <div class="card-logo">
+      <div class="logo-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a95a3" stroke-width="1.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="card-title-row">
+        <span class="card-title">Remote Sensing and GIS Integration for Disaster Response Routing</span>
+        <span class="card-badge badge-completed">Completed</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Fusing satellite imagery with road network GIS data to generate dynamic routing recommendations for emergency responders in the aftermath of floods and urban disasters.</p>
+        <div class="card-meta">
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            2020 – 2023
+          </span>
+          <span class="meta-item">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            4 Researchers
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="#" class="read-more">Read more
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  © 2025 CIM Lab — Professor Mehdi Sookhak Research Group &nbsp;·&nbsp; Texas A&amp;M University – Corpus Christi
+</footer>
+
+<script>
+  const tagMap = {
+    'ai':        ['ai'],
+    'transport': ['transport'],
+    'geo':       ['geo'],
+    'privacy':   ['privacy'],
+    'all':       []
+  };
+
+  function filterCards(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.project-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const tags = card.dataset.tag || '';
+      const show = tag === 'all' || tags.includes(tag);
+      card.style.display = show ? 'grid' : 'none';
+      if (show) visible++;
+    });
+    document.querySelector('.section-label').textContent = visible + ' Project' + (visible !== 1 ? 's' : '');
+  }
+</script>
+
+</body>
+</html>
