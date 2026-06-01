@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Detail | CIM Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --blue: #1a6eb5;
+      --blue-light: #2485d4;
+      --accent: #0aa0d6;
+      --gray-bg: #f5f7fa;
+      --gray-border: #dce1e9;
+      --gray-mid: #8a95a3;
+      --white: #ffffff;
+      --text: #1c2635;
+      --text-light: #4e5d6e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.35);
+    }
+    .logo-area {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      font-family: 'Source Serif 4', serif;
+      font-weight: 700; font-size: 16px;
+      color: #fff; letter-spacing: -1px;
+    }
+    .logo-text { font-size: 17px; font-weight: 600; color: #fff; letter-spacing: .3px; }
+    .logo-text span { color: var(--accent); }
+    nav { display: flex; gap: 28px; }
+    nav a {
+      color: rgba(255,255,255,.7);
+      text-decoration: none; font-size: 14px; font-weight: 400;
+      letter-spacing: .3px; transition: color .2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-border);
+      padding: 0 40px;
+      height: 44px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--gray-mid);
+    }
+    .breadcrumb a {
+      color: var(--blue); text-decoration: none;
+      transition: color .15s;
+    }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb svg { opacity: .5; }
+
+    /* ── HERO BANNER ── */
+    .project-hero {
+      background: var(--navy);
+      padding: 48px 40px 0;
+      border-bottom: 3px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    .project-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(10,160,214,.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 32px;
+      align-items: flex-start;
+      position: relative;
+    }
+    .hero-logo {
+      width: 160px; height: 160px;
+      background: #1a2d40;
+      border: 2px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      display: grid; place-items: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-bottom: -3px; /* sit on the accent line */
+    }
+    .hero-logo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .hero-logo .logo-placeholder-lg {
+      display: grid; place-items: center;
+      color: rgba(255,255,255,.25);
+    }
+    .hero-meta { padding-bottom: 32px; }
+    .hero-tags {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .hero-tag {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .8px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 12px;
+      background: rgba(10,160,214,.18);
+      color: var(--accent);
+      border: 1px solid rgba(10,160,214,.3);
+    }
+    .hero-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 30px; font-weight: 700;
+      color: #fff; line-height: 1.25;
+      letter-spacing: -.4px;
+      margin-bottom: 14px;
+    }
+    .hero-byline {
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap;
+    }
+    .byline-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: rgba(255,255,255,.6);
+    }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; letter-spacing: .3px;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    .pill-active   { background: rgba(26,160,100,.2); color: #4ddba0; border: 1px solid rgba(77,219,160,.25); }
+    .pill-ongoing  { background: rgba(220,140,0,.18);  color: #f0aa30; border: 1px solid rgba(240,170,48,.25); }
+    .pill-completed{ background: rgba(100,130,170,.18); color: #9ab3cc; border: 1px solid rgba(154,179,204,.25); }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* ── MAIN LAYOUT ── */
+    .page-body {
+      max-width: 900px; margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── LEFT: CONTENT ── */    .content-section {
+      background: var(--white);
+      border: 1px solid var(--gray-border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--gray-border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-header h2 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 15px; font-weight: 600;
+      color: var(--navy); letter-spacing: -.1px;
+    }
+    .section-header svg { color: var(--blue); opacity: .7; }
+    .section-body { padding: 20px 22px; }
+
+    .prose p {
+      font-size: 14.5px; line-height: 1.75;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+    .prose p:last-child { margin-bottom: 0; }
+
+    /* Objectives list */
+    .obj-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .obj-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--text-light); line-height: 1.6;
+    }
+    .obj-bullet {
+      flex-shrink: 0;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(26,110,181,.1);
+      display: grid; place-items: center;
+      margin-top: 1px;
+    }
+    .obj-bullet svg { color: var(--blue); }
+
+    /* Publications */
+    .pub-list { display: flex; flex-direction: column; gap: 14px; }
+    .pub-item {
+      padding: 14px 16px;
+      border: 1px solid var(--gray-border);
+      border-left: 3px solid var(--blue);
+      border-radius: 6px;
+      background: var(--gray-bg);
+    }
+    .pub-title {
+      font-size: 13.5px; font-weight: 600;
+      color: var(--navy); line-height: 1.4; margin-bottom: 4px;
+    }
+    .pub-authors {
+      font-size: 12.5px; color: var(--text-light);
+      font-style: italic; margin-bottom: 4px;
+    }
+    .pub-venue {
+      font-size: 12px; color: var(--gray-mid);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pub-venue a {
+      color: var(--blue); text-decoration: none; font-weight: 500;
+      display: flex; align-items: center; gap: 4px;
+      font-style: normal;
+    }
+    .pub-venue a:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 28px;
+      font-size: 12.5px; color: var(--gray-mid);
+      border-top: 1px solid var(--gray-border);
+    }
+
+    /* ── RESPONSIVE ── */
+    .page-body { display: flex; flex-direction: column; gap: 28px; }
+
+    @media (max-width: 720px) {
+      header { padding: 0 16px; }
+      nav { display: none; }
+      .breadcrumb { padding: 0 16px; }
+      .project-hero { padding: 28px 16px 0; }
+      .hero-inner { grid-template-columns: 1fr; gap: 20px; }
+      .hero-logo { width: 100px; height: 100px; }
+      .hero-title { font-size: 22px; }
+      .page-body { padding: 24px 12px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="https://cim-lab.github.io/" class="logo-area">
+    <div class="logo-mark">CIM</div>
+    <span class="logo-text"><span>CIM</span> Lab</span>
+  </a>
+  <nav>
+    <a href="https://cim-lab.github.io/">Home</a>
+    <a href="projects.html" class="active">Projects</a>
+    <a href="#">Team</a>
+    <a href="#">Publications</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="https://cim-lab.github.io/">Home</a>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  <a href="projects.html">Projects</a>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  <span id="bc-title">Loading…</span>
+</div>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="hero-inner">
+    <div class="hero-logo" id="hero-logo">
+      <div class="logo-placeholder-lg" id="hero-icon"></div>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-tags" id="hero-tags"></div>
+      <h1 class="hero-title" id="hero-title">Loading…</h1>
+      <div class="hero-byline">
+        <span class="status-pill" id="hero-status"></span>
+        <span class="byline-item" id="hero-dates">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span></span>
+        </span>
+        <span class="byline-item" id="hero-team">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="page-body">
+
+    <!-- Overview -->
+    <div class="content-section">
+      <div class="section-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <h2>Overview</h2>
+      </div>
+      <div class="section-body prose" id="overview"></div>
+    </div>
+
+    <!-- Objectives -->
+    <div class="content-section">
+      <div class="section-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <h2>Research Objectives</h2>
+      </div>
+      <div class="section-body">
+        <ul class="obj-list" id="objectives"></ul>
+      </div>
+    </div>
+
+    <!-- Methodology -->
+    <div class="content-section">
+      <div class="section-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <h2>Methodology</h2>
+      </div>
+      <div class="section-body prose" id="methodology"></div>
+    </div>
+
+    <!-- Publications -->
+    <div class="content-section">
+      <div class="section-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <h2>Related Publications</h2>
+      </div>
+      <div class="section-body">
+        <div class="pub-list" id="publications"></div>
+      </div>
+    </div>
+
+</div><!-- /page-body -->
+
+<footer>
+  © 2025 CIM Lab — Professor Mehdi Sookhak Research Group &nbsp;·&nbsp; Texas A&amp;M University – Corpus Christi
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+//  PROJECT DATA
+// ─────────────────────────────────────────────
+const PROJECTS = {
+  'federated-learning': {
+    title: 'Federated Learning for Privacy-Preserving Traffic Prediction',
+    status: 'active',
+    dates: '2023 – Present',
+    teamCount: 4,
+    tags: ['AI & ML', 'Privacy'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></svg>`,
+    overview: [
+      'This project develops federated machine learning frameworks that allow multiple transportation agencies and sensor networks to collaboratively train predictive models without centralizing sensitive traffic data. By keeping raw data local to each participant, the approach addresses critical privacy and regulatory concerns.',
+      'Traditional traffic prediction systems require aggregating large datasets in a central server, creating privacy risks and organizational barriers to data sharing. Our federated approach allows agencies across different jurisdictions to benefit from a shared model without ever surrendering their proprietary data.',
+      'The project is funded through a combination of NSF and Texas DOT grants and builds on prior work in privacy-preserving ML, secure aggregation protocols, and urban traffic modeling.'
+    ],
+    objectives: [
+      'Design a communication-efficient federated learning protocol tailored to heterogeneous traffic sensor networks.',
+      'Develop differential-privacy-compatible gradient aggregation mechanisms that withstand inference attacks.',
+      'Benchmark prediction accuracy vs. a centralized baseline across real-world datasets from three Texas cities.',
+      'Build an open-source reference implementation deployable by transportation agencies.',
+      'Publish findings and release anonymized datasets to the research community.'
+    ],
+    methodology: [
+      'We adopt a FedAvg-based training loop where each participant trains a local LSTM model on its own sensor streams. Gradient updates—rather than raw data—are transmitted to a trusted aggregator after being clipped and perturbed with calibrated Gaussian noise to satisfy (ε, δ)-differential privacy.',
+      'Model heterogeneity across sensors (varying sampling rates, coverage areas) is handled through a novel asynchronous aggregation scheme with adaptive weighting. The aggregator never receives or stores raw sensor readings.',
+      'Evaluation uses a held-out test set from TxDOT\'s real-time sensor archive, measuring RMSE, MAE, and privacy budget expenditure across training rounds.'
+    ],
+    publications: [
+      {
+        title: 'Federated Traffic Prediction with Differential Privacy Guarantees Under Non-IID Sensor Distributions',
+        authors: 'M. Sookhak, J. Lin, A. Patel, R. Nguyen',
+        venue: 'IEEE Transactions on Intelligent Transportation Systems, 2024',
+        url: '#'
+      },
+      {
+        title: 'Secure Gradient Aggregation for Urban Mobility Forecasting',
+        authors: 'J. Lin, M. Sookhak',
+        venue: 'ACM CCS Workshop on Privacy in the Electronic Society, 2023',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Jiawei Lin', role: 'PhD Student', initials: 'JL' },
+      { name: 'Ananya Patel', role: 'PhD Student', initials: 'AP' },
+      { name: 'Ryan Nguyen', role: 'MS Student', initials: 'RN' }
+    ],
+    info: { 'Funding': 'NSF + Texas DOT', 'Budget': '$420,000', 'Start Date': 'Jan 2023', 'End Date': 'Dec 2025', 'IRB Status': 'Approved' },
+    progress: { phase: 'Model Evaluation', pct: 68 },
+    keywords: ['Federated Learning', 'Differential Privacy', 'Traffic Prediction', 'LSTM', 'Secure Aggregation', 'Smart City'],
+    funding: [
+      { name: 'National Science Foundation', amount: '$280,000', icon: '🏛️' },
+      { name: 'Texas Dept. of Transportation', amount: '$140,000', icon: '🚦' }
+    ],
+    links: [
+      { label: 'GitHub Repository', url: '#', icon: 'github' },
+      { label: 'Project Website', url: '#', icon: 'external' }
+    ]
+  },
+
+  'av-safety': {
+    title: 'Autonomous Vehicle Safety Verification in Mixed Traffic Environments',
+    status: 'active',
+    dates: '2022 – Present',
+    teamCount: 3,
+    tags: ['Transportation', 'AI & ML'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v4h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    overview: [
+      'Autonomous vehicles must make split-second decisions in scenarios never encountered during training. This project builds a comprehensive formal verification and simulation-based safety testing pipeline targeting the most hazardous edge cases: adversarial human driver behavior, pedestrian occlusion, and multi-agent interaction failures.',
+      'Current AV validation methodologies rely heavily on mileage accumulation in simulation, making it impractical to cover the long tail of dangerous scenarios. We combine temporal logic model checking with adversarial reinforcement learning to generate and systematically test edge cases that conventional simulation misses.',
+      'Outcomes include a publicly available safety benchmark suite, a formal specification library for AV behavioral requirements, and guidelines adopted by two regional transit authorities for AV pilot evaluation.'
+    ],
+    objectives: [
+      'Formalize AV behavioral safety requirements using Signal Temporal Logic (STL) specifications.',
+      'Develop an adversarial RL agent that generates maximally dangerous traffic scenarios within CARLA simulator.',
+      'Apply model checking to verify finite-state AV decision modules against STL properties.',
+      'Quantify failure rates across scenario types and identify systematic weaknesses in three open-source AV stacks.',
+      'Publish a reproducible benchmark suite and contribute to IEEE P2846 working group standards.'
+    ],
+    methodology: [
+      'Safety requirements are first expressed as STL formulas capturing collision avoidance, right-of-way compliance, and comfort bounds. An adversarial agent trained via Proximal Policy Optimization then searches the CARLA simulation environment for parameter combinations that falsify these formulas.',
+      'For discrete planning modules, we apply NuSMV model checking to bounded state spaces generated by symbolic abstraction of the AV planner. Coverage is tracked using mutation testing to ensure the specification suite is non-trivial.',
+      'Statistical model checking with importance sampling provides probabilistic safety guarantees for the continuous dynamics layer, quantifying probability of specification violation under realistic traffic distributions.'
+    ],
+    publications: [
+      {
+        title: 'Adversarial Scenario Generation for AV Safety Testing Using Constrained Reinforcement Learning',
+        authors: 'M. Sookhak, K. Torres, B. Williams',
+        venue: 'IEEE ITSC 2023, Bilbao, Spain',
+        url: '#'
+      },
+      {
+        title: 'Signal Temporal Logic Specifications for Autonomous Driving Safety Requirements',
+        authors: 'K. Torres, M. Sookhak',
+        venue: 'ACM/IEEE ICCPS 2024',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Katia Torres', role: 'PhD Student', initials: 'KT' },
+      { name: 'Ben Williams', role: 'MS Student', initials: 'BW' }
+    ],
+    info: { 'Funding': 'NSF + Industry', 'Budget': '$310,000', 'Start Date': 'Aug 2022', 'End Date': 'Jul 2025', 'IRB Status': 'N/A' },
+    progress: { phase: 'Benchmarking', pct: 75 },
+    keywords: ['Autonomous Vehicles', 'Formal Verification', 'Adversarial RL', 'CARLA', 'Signal Temporal Logic', 'Safety Testing'],
+    funding: [
+      { name: 'National Science Foundation', amount: '$210,000', icon: '🏛️' },
+      { name: 'Toyota Research Institute', amount: '$100,000', icon: '🚗' }
+    ],
+    links: [
+      { label: 'Benchmark Dataset', url: '#', icon: 'external' },
+      { label: 'Preprint (arXiv)', url: '#', icon: 'external' }
+    ]
+  },
+
+  'geospatial-anomaly': {
+    title: 'Deep Learning for Urban Geospatial Anomaly Detection',
+    status: 'ongoing',
+    dates: '2022 – 2025',
+    teamCount: 5,
+    tags: ['Geospatial', 'AI & ML'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+    overview: [
+      'Urban mobility systems generate petabytes of spatiotemporal data annually. Within this data lie subtle anomalies — unusual pedestrian concentrations, unexpected road-speed drops, emerging infrastructure failures — that carry valuable signals for city planners, emergency managers, and transportation operators.',
+      'This project applies graph neural networks and spatiotemporal transformer architectures to identify deviations from expected patterns in multi-source urban data, including GPS traces, loop detector readings, and 311 service requests.',
+      'Results are being integrated into a live dashboard prototype deployed in partnership with the City of Corpus Christi, enabling operators to receive early-warning alerts for potential mobility disruptions.'
+    ],
+    objectives: [
+      'Construct a multi-source urban data fusion pipeline combining GPS, loop detector, and incident report streams.',
+      'Design a spatiotemporal graph transformer architecture for joint spatial and temporal anomaly scoring.',
+      'Develop an interpretability module that highlights which spatial regions and time windows drive anomaly scores.',
+      'Evaluate detection sensitivity vs. false-positive rate against ground-truth incident logs.',
+      'Deploy a live dashboard for city operator use and conduct a usability study with municipal staff.'
+    ],
+    methodology: [
+      'Road network topology is encoded as a directed graph with nodes representing intersections and edges weighted by free-flow travel time. A ST-GNN layer captures short-range spatial correlations while a multi-head temporal attention module models long-range temporal dependencies.',
+      'Anomaly scores are computed as reconstruction errors from a variational autoencoder trained on a rolling 6-month baseline window. Gradients with respect to the input are used for saliency-based interpretability.',
+      'The system is evaluated on three months of held-out data with anomalies manually annotated by transportation engineers from TxDOT incident logs.'
+    ],
+    publications: [
+      {
+        title: 'Spatiotemporal Graph Transformers for Urban Anomaly Detection at Scale',
+        authors: 'M. Sookhak, Y. Zhang, L. Okonkwo, D. Shah, P. Lee',
+        venue: 'ACM SIGSPATIAL 2024',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Yifan Zhang', role: 'PhD Student', initials: 'YZ' },
+      { name: 'Lola Okonkwo', role: 'PhD Student', initials: 'LO' },
+      { name: 'Dev Shah', role: 'MS Student', initials: 'DS' },
+      { name: 'Patricia Lee', role: 'Undergrad RA', initials: 'PL' }
+    ],
+    info: { 'Funding': 'Texas DOT + City', 'Budget': '$260,000', 'Start Date': 'Sep 2022', 'End Date': 'Aug 2025', 'IRB Status': 'Approved' },
+    progress: { phase: 'Dashboard Deployment', pct: 82 },
+    keywords: ['Anomaly Detection', 'Graph Neural Networks', 'Spatiotemporal', 'Urban Mobility', 'Smart City', 'Interpretability'],
+    funding: [
+      { name: 'Texas Dept. of Transportation', amount: '$160,000', icon: '🚦' },
+      { name: 'City of Corpus Christi', amount: '$100,000', icon: '🏙️' }
+    ],
+    links: [
+      { label: 'City Dashboard (Beta)', url: '#', icon: 'external' },
+      { label: 'GitHub Repository', url: '#', icon: 'github' }
+    ]
+  },
+
+  'differential-privacy': {
+    title: 'Differential Privacy Mechanisms for Location Data Sharing',
+    status: 'active',
+    dates: '2024 – Present',
+    teamCount: 2,
+    tags: ['Privacy', 'AI & ML'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    overview: [
+      'Transportation agencies routinely collect fine-grained location data from connected vehicles, transit cards, and ride-share platforms. Sharing this data — even in aggregate form — can inadvertently expose individual travel patterns, home addresses, and behavioral signatures.',
+      'This project designs mathematically rigorous differential privacy mechanisms that allow agencies to publish useful mobility statistics, origin-destination matrices, and demand heatmaps while providing formal, provable guarantees that individual records cannot be reconstructed.',
+      'The work addresses the practical deployment gap between theoretical DP guarantees and usable data products, introducing adaptive noise-calibration methods that preserve analytical utility across diverse query types.'
+    ],
+    objectives: [
+      'Characterize the privacy-utility trade-off for common mobility analytics queries under (ε, δ)-DP.',
+      'Develop an adaptive Laplace/Gaussian mechanism that calibrates noise to per-query sensitivity automatically.',
+      'Extend the framework to support streaming data ingestion without unbounded privacy budget consumption.',
+      'Validate utility retention on real OD matrix datasets from TxDOT with ε ∈ {0.1, 0.5, 1.0, 5.0}.',
+      'Produce an open-source Python library for transportation data analysts.'
+    ],
+    methodology: [
+      'We derive global and local sensitivity bounds for a catalog of transportation analytics queries (trip counts, flow volumes, OD matrices, speed aggregates). Noise is drawn from truncated Laplace distributions calibrated to query sensitivity divided by the privacy budget ε.',
+      'For streaming pipelines, we apply the binary tree mechanism and its extensions to bound cumulative privacy loss under continuous publication. Rényi differential privacy accounting is used to manage composition across heterogeneous query types.',
+      'Utility is measured via mean relative error on OD flow estimates and KL divergence of reconstructed demand distributions versus the noiseless baseline.'
+    ],
+    publications: [
+      {
+        title: 'Adaptive Differential Privacy for Urban Origin-Destination Matrix Publication',
+        authors: 'M. Sookhak, C. Rivera',
+        venue: 'IEEE Big Data 2024 (under review)',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Carlos Rivera', role: 'PhD Student', initials: 'CR' }
+    ],
+    info: { 'Funding': 'NSF CISE', 'Budget': '$180,000', 'Start Date': 'Jan 2024', 'End Date': 'Dec 2026', 'IRB Status': 'Approved' },
+    progress: { phase: 'Mechanism Design', pct: 35 },
+    keywords: ['Differential Privacy', 'Location Data', 'OD Matrix', 'Noise Mechanisms', 'Privacy Budget', 'Transportation'],
+    funding: [
+      { name: 'NSF CISE Division', amount: '$180,000', icon: '🏛️' }
+    ],
+    links: [
+      { label: 'Python Library (GitHub)', url: '#', icon: 'github' },
+      { label: 'Preprint (arXiv)', url: '#', icon: 'external' }
+    ]
+  },
+
+  'transit-optimization': {
+    title: 'Real-Time Multi-Modal Transit Optimization with Reinforcement Learning',
+    status: 'ongoing',
+    dates: '2021 – 2024',
+    teamCount: 6,
+    tags: ['Transportation', 'Geospatial'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    overview: [
+      'Public transit networks face a fundamental tension between schedule efficiency and demand responsiveness. Fixed-route, fixed-schedule systems leave capacity stranded during off-peak hours while failing to meet surge demand during events or disruptions.',
+      'This project applies deep reinforcement learning to dynamically dispatch and re-route buses and ride-share vehicles in response to real-time passenger demand signals, weather events, and road incidents. The approach demonstrated a 21% reduction in average wait time in simulation against a demand dataset from a mid-sized Texas city.',
+      'The project has concluded its main research phase and produced a validated simulator, trained policy library, and two open-access publications. A follow-on project in collaboration with a regional transit authority is planned for 2025.'
+    ],
+    objectives: [
+      'Model multi-modal transit dispatch as a Markov Decision Process over a dynamic road network graph.',
+      'Train a multi-agent PPO policy that coordinates bus and ride-share fleets under shared demand signals.',
+      'Incorporate real-time incident and weather data as contextual features for robust generalization.',
+      'Evaluate against a static GTFS schedule baseline on 90 days of demand data.',
+      'Measure carbon emission reductions from improved load factor and reduced deadhead miles.'
+    ],
+    methodology: [
+      'Each vehicle is modeled as an agent whose action space is a discrete set of next-stop choices. A shared critic observes global state (network loads, vehicle positions, queued demand) while individual actors output decentralized routing decisions using only local observations — enabling real-time inference at deployment.',
+      'Training uses a curriculum that progressively introduces demand complexity: starting with single-line scenarios and graduating to full network operation including cross-modal transfers. Reward shaping balances passenger waiting time, vehicle utilization, and deadhead distance.',
+      'The simulation environment is built on SUMO with a custom Python API that ingests GTFS feeds and real AADT demand from TxDOT.'
+    ],
+    publications: [
+      {
+        title: 'Multi-Agent Reinforcement Learning for Adaptive Multi-Modal Transit Dispatch',
+        authors: 'M. Sookhak, F. Adeyemi, H. Chen, S. Park, T. Osei, N. Brown',
+        venue: 'Transportation Research Part C, 2024',
+        url: '#'
+      },
+      {
+        title: 'Curriculum Training Strategies for City-Scale Transit RL Agents',
+        authors: 'F. Adeyemi, M. Sookhak',
+        venue: 'IEEE ITSC 2022',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Femi Adeyemi', role: 'PhD Student', initials: 'FA' },
+      { name: 'Hao Chen', role: 'PhD Student', initials: 'HC' },
+      { name: 'Soo-Jin Park', role: 'MS Student', initials: 'SP' },
+      { name: 'Theo Osei', role: 'MS Student', initials: 'TO' },
+      { name: 'Nina Brown', role: 'Undergrad RA', initials: 'NB' }
+    ],
+    info: { 'Funding': 'TxDOT + USDOT', 'Budget': '$490,000', 'Start Date': 'May 2021', 'End Date': 'Dec 2024', 'IRB Status': 'Approved' },
+    progress: { phase: 'Completed', pct: 100 },
+    keywords: ['Reinforcement Learning', 'Multi-Agent', 'Transit Optimization', 'SUMO', 'GTFS', 'PPO', 'Smart Mobility'],
+    funding: [
+      { name: 'Texas Dept. of Transportation', amount: '$290,000', icon: '🚦' },
+      { name: 'US Dept. of Transportation', amount: '$200,000', icon: '🏛️' }
+    ],
+    links: [
+      { label: 'GitHub (SUMO Env)', url: '#', icon: 'github' },
+      { label: 'Dataset (Zenodo)', url: '#', icon: 'external' }
+    ]
+  },
+
+  'disaster-routing': {
+    title: 'Remote Sensing and GIS Integration for Disaster Response Routing',
+    status: 'completed',
+    dates: '2020 – 2023',
+    teamCount: 4,
+    tags: ['Geospatial', 'Transportation'],
+    icon: `<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
+    overview: [
+      'Natural disasters such as flooding, hurricanes, and wildfires sever road networks and render pre-computed evacuation routes obsolete within hours. Emergency responders require near-real-time routing guidance derived from current imagery, not historical maps.',
+      'This completed project developed an end-to-end pipeline that ingests satellite and drone imagery, applies semantic segmentation models to classify road passability, and feeds updated passability scores into a dynamic routing engine for first responders and evacuation planners.',
+      'The system was piloted during the 2022 flooding events in South Texas and credited by Nueces County emergency management with reducing average responder deployment times by an estimated 17% in affected zones.'
+    ],
+    objectives: [
+      'Develop a multi-class road passability segmentation model trained on post-disaster satellite imagery.',
+      'Integrate segmentation output with OpenStreetMap road networks in a live GIS routing backend.',
+      'Build a mobile-accessible dashboard for field responders with offline-capable route downloads.',
+      'Validate system latency and accuracy against ground-truth passability assessments from field teams.',
+      'Publish dataset, model weights, and methodology for adoption by other disaster-prone regions.'
+    ],
+    methodology: [
+      'Satellite imagery from Sentinel-2 and Planet Labs is ingested via API and processed through a U-Net segmentation model fine-tuned on a custom dataset of 8,400 labeled post-disaster road segments across five disaster events. Passability scores (passable, restricted, impassable) are mapped to cost weights in a OSRM routing graph updated every 15 minutes.',
+      'Model calibration accounts for atmospheric correction, sun-angle variation, and sensor-specific band combinations. Active learning was used to efficiently expand the training set with high-uncertainty samples flagged during deployment.',
+      'A Flutter-based mobile application serves as the responder interface, with route data cached locally for connectivity-degraded field conditions.'
+    ],
+    publications: [
+      {
+        title: 'Post-Disaster Road Passability Assessment via Satellite Imagery and Semantic Segmentation',
+        authors: 'M. Sookhak, I. Fernandez, Q. Wu, A. Diallo',
+        venue: 'Remote Sensing (MDPI), 2023',
+        url: '#'
+      },
+      {
+        title: 'Dynamic GIS Routing for Emergency Response Under Post-Disaster Network Degradation',
+        authors: 'I. Fernandez, M. Sookhak',
+        venue: 'ISPRS Journal of Photogrammetry and Remote Sensing, 2022',
+        url: '#'
+      }
+    ],
+    team: [
+      { name: 'Prof. M. Sookhak', role: 'PI', initials: 'MS' },
+      { name: 'Isabel Fernandez', role: 'PhD Student', initials: 'IF' },
+      { name: 'Qiang Wu', role: 'PhD Student', initials: 'QW' },
+      { name: 'Aisha Diallo', role: 'MS Student', initials: 'AD' }
+    ],
+    info: { 'Funding': 'FEMA + NSF', 'Budget': '$375,000', 'Start Date': 'Mar 2020', 'End Date': 'Feb 2023', 'IRB Status': 'Approved' },
+    progress: { phase: 'Completed', pct: 100 },
+    keywords: ['Remote Sensing', 'GIS', 'Semantic Segmentation', 'Disaster Response', 'U-Net', 'OSRM', 'Satellite Imagery'],
+    funding: [
+      { name: 'FEMA Hazard Mitigation', amount: '$225,000', icon: '🆘' },
+      { name: 'National Science Foundation', amount: '$150,000', icon: '🏛️' }
+    ],
+    links: [
+      { label: 'Model Weights (HuggingFace)', url: '#', icon: 'external' },
+      { label: 'Dataset (Zenodo)', url: '#', icon: 'external' },
+      { label: 'GitHub', url: '#', icon: 'github' }
+    ]
+  }
+};
+
+// ─────────────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────────────
+const SVG_CALENDAR = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+const SVG_CHECK    = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+const SVG_GITHUB   = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
+const SVG_EXTERNAL = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+function statusPill(status) {
+  const map = {
+    active:    { cls: 'pill-active',    label: 'Active' },
+    ongoing:   { cls: 'pill-ongoing',   label: 'Ongoing' },
+    completed: { cls: 'pill-completed', label: 'Completed' }
+  };
+  const s = map[status] || map.ongoing;
+  return `<span class="status-pill ${s.cls}"><span class="pill-dot"></span>${s.label}</span>`;
+}
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function render(id) {
+  const p = PROJECTS[id];
+  if (!p) {
+    document.getElementById('hero-title').textContent = 'Project not found.';
+    document.getElementById('bc-title').textContent = 'Not Found';
+    return;
+  }
+
+  // Breadcrumb
+  document.getElementById('bc-title').textContent = p.title;
+  document.title = p.title + ' | CIM Lab';
+
+  // Hero icon
+  document.getElementById('hero-icon').innerHTML = p.icon;
+
+  // Tags
+  document.getElementById('hero-tags').innerHTML =
+    p.tags.map(t => `<span class="hero-tag">${t}</span>`).join('');
+
+  // Title
+  document.getElementById('hero-title').textContent = p.title;
+
+  // Status pill
+  document.getElementById('hero-status').outerHTML = statusPill(p.status);
+
+  // Dates
+  document.querySelector('#hero-dates span').textContent = p.dates;
+
+  // Team count
+  document.querySelector('#hero-team span').textContent = p.teamCount + ' Researchers';
+
+  // Overview
+  document.getElementById('overview').innerHTML =
+    p.overview.map(para => `<p>${para}</p>`).join('');
+
+  // Objectives
+  document.getElementById('objectives').innerHTML =
+    p.objectives.map(obj => `
+      <li>
+        <div class="obj-bullet">${SVG_CHECK}</div>
+        <span>${obj}</span>
+      </li>`).join('');
+
+  // Methodology
+  document.getElementById('methodology').innerHTML =
+    p.methodology.map(para => `<p>${para}</p>`).join('');
+
+  // Publications
+  document.getElementById('publications').innerHTML =
+    p.publications.map(pub => `
+      <div class="pub-item">
+        <div class="pub-title">${pub.title}</div>
+        <div class="pub-authors">${pub.authors}</div>
+        <div class="pub-venue">
+          ${pub.venue}
+          <a href="${pub.url}" target="_blank">${SVG_EXTERNAL} View</a>
+        </div>
+      </div>`).join('');
+}
+
+// ─────────────────────────────────────────────
+//  BOOT
+// ─────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const projectId = params.get('id') || 'federated-learning';
+render(projectId);
+</script>
+
+</body>
+</html>
