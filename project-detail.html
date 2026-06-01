@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project | CIM Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink:   #0f1923;
+      --slate: #1e2d3d;
+      --steel: #2c4a6e;
+      --sky:   #1a7fc1;
+      --mist:  #e8eef5;
+      --cloud: #f4f7fb;
+      --white: #ffffff;
+      --rule:  #d0dae6;
+      --text:  #243447;
+      --sub:   #536070;
+      --cap:   #8a9baa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'IBM Plex Sans', sans-serif; background: var(--cloud); color: var(--text); }
+
+    /* HEADER */
+    header {
+      background: var(--ink);
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      position: sticky; top: 0; z-index: 200;
+      border-bottom: 2px solid var(--sky);
+    }
+    .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-badge {
+      background: var(--sky); color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; font-weight: 700;
+      width: 38px; height: 38px; border-radius: 6px;
+      display: grid; place-items: center; letter-spacing: -0.5px;
+    }
+    .logo-label { font-size: 16px; font-weight: 600; color: #fff; }
+    .logo-label em { color: var(--sky); font-style: normal; }
+    nav { display: flex; gap: 32px; }
+    nav a {
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 13.5px; font-weight: 400; letter-spacing: 0.3px; transition: color .2s;
+    }
+    nav a:hover { color: #fff; }
+    nav a.active { color: #fff; font-weight: 500; border-bottom: 2px solid var(--sky); padding-bottom: 2px; }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      background: var(--white);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 48px; height: 42px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--cap);
+    }
+    .breadcrumb a { color: var(--sky); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero {
+      background: var(--slate);
+      border-bottom: 3px solid var(--sky);
+      padding: 0;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(15,25,35,0.92) 38%, rgba(15,25,35,0.55) 70%, rgba(15,25,35,0.2) 100%);
+      z-index: 1;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      z-index: 0;
+      transition: opacity 0.4s;
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 960px; margin: 0 auto;
+      padding: 44px 48px 40px;
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 32px; align-items: center;
+    }
+    .hero-logo {
+      width: 130px; height: 130px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      display: grid; place-items: center;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .hero-logo img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+    .hero-meta {}
+    .hero-funder {
+      font-size: 11px; font-weight: 600; letter-spacing: 1.6px;
+      text-transform: uppercase; color: var(--sky);
+      margin-bottom: 10px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; color: #fff; line-height: 1.25;
+      letter-spacing: -0.3px; margin-bottom: 16px;
+    }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.75);
+      font-size: 12px; font-weight: 400;
+      padding: 5px 12px; border-radius: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .hero-chip svg { opacity: 0.7; }
+
+    /* BODY */
+    .page-body {
+      max-width: 960px; margin: 0 auto;
+      padding: 44px 24px 80px;
+      display: flex; flex-direction: column; gap: 28px;
+    }
+
+    /* SECTION CARD */
+    .section-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      animation: fadeUp 0.45s ease both;
+    }
+    .section-card:nth-child(1) { animation-delay: 0.05s; }
+    .section-card:nth-child(2) { animation-delay: 0.12s; }
+    .section-card:nth-child(3) { animation-delay: 0.19s; }
+    .section-card:nth-child(4) { animation-delay: 0.26s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-head {
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; gap: 10px;
+      background: var(--cloud);
+    }
+    .section-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 600;
+      color: var(--ink); letter-spacing: -0.1px;
+    }
+    .section-head svg { color: var(--sky); opacity: 0.8; flex-shrink: 0; }
+
+    .section-body { padding: 24px; }
+
+    /* prose */
+    .prose p {
+      font-size: 14.5px; line-height: 1.8;
+      color: var(--sub); margin-bottom: 16px;
+    }
+    .prose p:last-child { margin-bottom: 0; }
+
+    /* objectives */
+    .obj-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .obj-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 14px; color: var(--sub); line-height: 1.65;
+    }
+    .obj-num {
+      flex-shrink: 0;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(26,127,193,0.1);
+      border: 1px solid rgba(26,127,193,0.25);
+      display: grid; place-items: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--sky); margin-top: 1px;
+    }
+
+    /* publications */
+    .pub-list { display: flex; flex-direction: column; gap: 16px; }
+    .pub-item {
+      padding: 16px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--sky);
+      background: var(--cloud);
+    }
+    .pub-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; margin-bottom: 5px; }
+    .pub-authors { font-size: 13px; color: var(--sub); font-style: italic; margin-bottom: 5px; }
+    .pub-venue { font-size: 12.5px; color: var(--cap); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .pub-link { color: var(--sky); text-decoration: none; font-weight: 500; font-style: normal; display: flex; align-items: center; gap: 4px; }
+    .pub-link:hover { text-decoration: underline; }
+
+    /* project image strip */
+    .project-image {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover;
+      border-bottom: 1px solid var(--rule);
+      display: block;
+    }
+
+    /* back link */
+    .back-bar {
+      display: flex; justify-content: flex-start;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--sky); font-size: 13px; font-weight: 600;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid rgba(26,127,193,0.35);
+      border-radius: 7px;
+      background: var(--white);
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .back-btn:hover { background: var(--mist); border-color: var(--sky); }
+
+    /* footer */
+    footer {
+      border-top: 1px solid var(--rule);
+      text-align: center; padding: 28px;
+      font-size: 12.5px; color: var(--cap);
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 0 16px; }
+      nav { display: none; }
+      .breadcrumb { padding: 0 16px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 20px; padding: 28px 16px; }
+      .hero-logo { width: 90px; height: 90px; }
+      .hero-title { font-size: 22px; }
+      .page-body { padding: 24px 12px 60px; }
+      .section-body { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="https://cim-lab.github.io/" class="logo-wrap">
+    <div class="logo-badge">CIM</div>
+    <span class="logo-label"><em>CIM</em> Lab</span>
+  </a>
+  <nav>
+    <a href="https://cim-lab.github.io/">Home</a>
+    <a href="projects.html" class="active">Projects</a>
+    <a href="#">Team</a>
+    <a href="#">Publications</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<div class="breadcrumb">
+  <a href="https://cim-lab.github.io/">Home</a>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  <a href="projects.html">Projects</a>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  <span id="bc-title">Loading…</span>
+</div>
+
+<div class="hero" id="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-logo"><img id="hero-logo-img" src="" alt=""/></div>
+    <div class="hero-meta">
+      <div class="hero-funder" id="hero-funder"></div>
+      <h1 class="hero-title" id="hero-title">Loading…</h1>
+      <div class="hero-chips" id="hero-chips"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <div class="back-bar">
+    <a href="projects.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      All Projects
+    </a>
+  </div>
+
+  <!-- Overview -->
+  <div class="section-card">
+    <div class="section-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <h2>Overview</h2>
+    </div>
+    <img class="project-image" id="project-img" src="" alt="Project image"/>
+    <div class="section-body prose" id="overview"></div>
+  </div>
+
+  <!-- Objectives -->
+  <div class="section-card">
+    <div class="section-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <h2>Research Objectives</h2>
+    </div>
+    <div class="section-body">
+      <ul class="obj-list" id="objectives"></ul>
+    </div>
+  </div>
+
+  <!-- Methodology -->
+  <div class="section-card">
+    <div class="section-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <h2>Methodology</h2>
+    </div>
+    <div class="section-body prose" id="methodology"></div>
+  </div>
+
+  <!-- Publications -->
+  <div class="section-card">
+    <div class="section-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <h2>Related Publications</h2>
+    </div>
+    <div class="section-body">
+      <div class="pub-list" id="publications"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 CIM Lab &nbsp;·&nbsp; Professor Mehdi Sookhak Research Group &nbsp;·&nbsp; Texas A&amp;M University – Corpus Christi
+</footer>
+
+<script>
+const SVG_EXT = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+const PROJECTS = {
+
+'nsf-career': {
+  title: 'NSF CAREER: SIM-Integrated Air-to-Ground Autonomous Vehicle Networks',
+  funder: 'NSF CAREER Award',
+  logo: 'image/logo 1.jpg',
+  image: 'image/project 1.png',
+  chips: [
+    { icon: '📡', label: '6G Wireless' },
+    { icon: '🚁', label: 'UAV Networks' },
+    { icon: '🤖', label: 'Autonomous Vehicles' },
+    { icon: '🧠', label: 'AI-Driven Control' }
+  ],
+  overview: [
+    'Future 6G wireless networks are expected to support autonomous vehicles, UAV-assisted connectivity, intelligent transportation systems, and edge-enabled cyber-physical applications. These systems require reliable air-to-ground communication, adaptive coverage, low-latency data exchange, and energy-efficient operation in highly dynamic environments.',
+    'Nevertheless, conventional wireless architectures remain constrained by their dependence on fixed infrastructure, fully digital signal processing, and reactive resource-allocation mechanisms. Recent advances in stacked intelligent metasurfaces (SIMs), artificial intelligence, UAV autonomy, and edge computing have created new opportunities to design programmable wireless environments in which electromagnetic waves can be shaped, redirected, and optimized before conventional baseband processing.',
+    'Despite significant conceptual and theoretical progress, SIM-integrated UAV-assisted networks have not yet been fully developed for supporting autonomous vehicle systems in realistic, mobile, and infrastructure-limited environments. The principal objective of this project is to develop a SIM-integrated air-to-ground autonomous vehicle network architecture that combines UAV platforms, programmable stacked intelligent metasurfaces, AI-driven control, and edge intelligence.'
+  ],
+  objectives: [
+    'Develop fundamental models and algorithmic tools for SIM-enabled UAV-assisted 6G networks.',
+    'Design AI-driven methods for joint UAV trajectory planning, power control, metasurface configuration, and wireless resource allocation.',
+    'Evaluate the proposed models through digital-twin simulation, edge-computing platforms, and experimental testbed components.',
+    'Develop simulation tools and educational materials to support research training for emerging careers in 6G wireless systems and intelligent transportation technologies.'
+  ],
+  methodology: [
+    'The research is framed around three thrusts. The first thrust develops fundamental models for SIM-enabled UAV-assisted 6G networks, including electromagnetic wave propagation models for stacked metasurfaces and channel capacity analysis under mobility constraints.',
+    'The second thrust designs AI-driven optimization methods that jointly address UAV trajectory planning, power allocation, metasurface phase configuration, and wireless resource scheduling. Deep reinforcement learning and multi-agent coordination algorithms are developed to handle the high-dimensional action spaces arising from these coupled optimization problems.',
+    'The third thrust evaluates the proposed models through digital-twin simulation environments, edge-computing platform prototypes, and experimental testbed components. The models, simulation tools, and educational materials developed will support research training and help prepare students for careers in 6G wireless systems, AI-enabled networking, and intelligent transportation technologies.'
+  ],
+  publications: [
+    { title: 'SIM-Enabled UAV-Assisted 6G Networks: Architecture and Optimization', authors: 'M. Sookhak et al.', venue: 'IEEE Transactions on Wireless Communications, 2025 (under review)', url: '#' }
+  ]
+},
+
+'cise-msi': {
+  title: 'CISE-MSI: Adaptive Multi-Tiered, Multi-Task Base Station Infrastructure for Communication-Denied Environments',
+  funder: 'NSF CISE-MSI',
+  logo: 'image/logo 2.png',
+  image: 'image/project 2.png',
+  chips: [
+    { icon: '🛸', label: 'UAV Base Stations' },
+    { icon: '🌐', label: '5G & Beyond' },
+    { icon: '🆘', label: 'Disaster Response' },
+    { icon: '🚗', label: 'Vehicular Networks' }
+  ],
+  overview: [
+    'Cellular networks have emerged as the preeminent communication technology, primarily due to their profound impact on modern society. 5G and beyond offer distinctive features, such as high transmission rate, ultra-reliable low-latency communication, massive machine-type communication, and edge and cloud computing.',
+    'Nevertheless, the performance of these networks can be susceptible to fluctuations in demand or unanticipated physical damage to the underlying infrastructure through natural or man-made disasters. Recent advancements in artificial intelligence, control systems, and autonomy within the realm of cyber-physical systems have facilitated the utilization of autonomous UAVs and autonomous vehicles to establish temporary cellular networks.',
+    'These networks rely on flying base stations (FBSs) or vehicular base stations (VBS) in large-scale disasters or events where terrestrial base stations are either unavailable or unable to provide the required coverage and quality of service. The principal objective is to develop an adaptive, multi-objective, multitier, and multi-task infrastructure consisting of aerial and vehicular base stations (MTBS) to improve coverage and QoS while facilitating various services in scenarios where the number of available vehicles is limited.'
+  ],
+  objectives: [
+    'Perform fundamental research aimed at developing models and algorithmic tools for an adaptive, multi-tiered collection of UAVs and VBSs to provide communication infrastructure in challenging environments such as disaster zones.',
+    'Develop trajectory-planning models in MTBS systems to deliver realistic solutions for effectively utilizing base stations in critical missions with limited vehicle availability.',
+    'Evaluate the performance of the proposed models using testbed environments.',
+    'Develop and release open-source code packages allowing educators and field professionals to deploy the framework in learning and training environments.'
+  ],
+  methodology: [
+    'The project formulates the multi-task base station placement and trajectory problem as a multi-objective optimization problem that simultaneously balances communication coverage, energy consumption, and mission task completion. Mixed-integer programming and heuristic decomposition methods are used to find feasible solutions under real-time constraints.',
+    'Trajectory planning for MTBS systems leverages deep reinforcement learning, where each UAV or vehicular base station acts as an autonomous agent learning cooperative policies through simulation-based training. Curriculum learning progressively increases the complexity of disaster scenarios to ensure robust generalization.',
+    'Experimental testbeds using commercial UAV platforms and software-defined radios validate the proposed models under realistic channel conditions and mobility patterns, bridging the gap between simulation and real-world deployment.'
+  ],
+  publications: [
+    { title: 'Multi-Task UAV Base Station Deployment for Post-Disaster Communication Recovery', authors: 'M. Sookhak et al.', venue: 'IEEE Transactions on Network and Service Management, 2024', url: '#' }
+  ]
+},
+
+'nvidia': {
+  title: 'NVIDIA Academic Grant: Enabling Pervasive, Wave-Based Intelligence for 6G Vehicular Networks',
+  funder: 'NVIDIA Academic Grant',
+  logo: 'image/logo 3.png',
+  image: 'image/project 3.png',
+  chips: [
+    { icon: '🔬', label: 'Digital Twins' },
+    { icon: '⚡', label: 'Edge AI' },
+    { icon: '📊', label: 'Synthetic Data' },
+    { icon: '🌐', label: '6G Vehicular' }
+  ],
+  overview: [
+    'Future autonomous mobility systems will require massive data processing, ultra-low-latency decision-making, and energy-efficient wireless intelligence across highly dynamic vehicular environments. However, current mobile edge computing architectures are constrained by latency, power consumption, limited real-world testing capability, and the difficulty of evaluating 6G vehicular networks at scale before deployment.',
+    'This NVIDIA Academic Grant project focuses on building a simulation-first research pipeline for 6G vehicular networks by integrating digital twins, synthetic data generation, physics-informed wireless modeling, and edge AI deployment. The project uses NVIDIA Isaac Sim on Omniverse to create high-fidelity digital-twin environments, generate multimodal synthetic datasets, and reduce the gap between simulation and real-world autonomous mobility systems.',
+    'The principal objective is to enable pervasive, wave-based intelligence for 6G vehicular networks through an NVIDIA-accelerated digital-twin and testbed framework, bridging digital-twin simulation and real-world experimentation for scalable, reproducible, and GPU-accelerated 6G vehicular network research.'
+  ],
+  objectives: [
+    'Develop city-scale digital-twin simulation environments for UAV-assisted vehicular networks using Isaac Sim and Omniverse Replicator.',
+    'Train and optimize AI models, including a parameter-efficient spatiotemporal transformer, for proactive quality-of-service and trajectory prediction using synthetic trajectories, LiDAR data, and wireless channel information.',
+    'Validate the proposed models through an edge and software-defined 6G testbed using NVIDIA Jetson platforms, the NVIDIA TAO Toolkit, NVIDIA Sionna, and the NVIDIA Aerial SDK.'
+  ],
+  methodology: [
+    'High-fidelity digital-twin environments are constructed within NVIDIA Isaac Sim on Omniverse, incorporating realistic urban geometry, traffic dynamics, and physics-accurate sensor simulations. Omniverse Replicator generates multimodal synthetic datasets that capture diverse weather, lighting, and traffic conditions.',
+    'A parameter-efficient spatiotemporal transformer architecture is designed for joint QoS prediction and UAV trajectory optimization. The model is pre-trained on large-scale synthetic datasets and fine-tuned on limited real-world measurements using transfer learning to minimize data collection overhead.',
+    'End-to-end validation uses NVIDIA Jetson edge platforms running the trained models in real-time, with NVIDIA Sionna providing physics-informed channel simulation and the NVIDIA Aerial SDK enabling software-defined radio emulation of 6G waveforms. The testbed allows reproducible performance benchmarking across varied mobility scenarios.'
+  ],
+  publications: [
+    { title: 'Digital-Twin-Enabled 6G Vehicular Networks: From Simulation to Edge Deployment', authors: 'M. Sookhak et al.', venue: 'IEEE Communications Magazine, 2025 (under review)', url: '#' }
+  ]
+},
+
+'cyber-care': {
+  title: 'U.S. DoT: Transportation Cybersecurity Center for Advanced Research and Education (CYBER-CARE)',
+  funder: 'U.S. Department of Transportation',
+  logo: 'image/logo 4.png',
+  image: 'image/project 4.png',
+  chips: [
+    { icon: '🔐', label: 'Cybersecurity' },
+    { icon: '🚦', label: 'Intelligent Transportation' },
+    { icon: '🚗', label: 'Connected Vehicles' },
+    { icon: '🏛️', label: '$10M Consortium' }
+  ],
+  overview: [
+    'Modern transportation infrastructure, including intelligent transportation systems (ITS), advanced traffic management systems (ATMS), connected and automated vehicles (CAVs), public transit systems, and multimodal transportation networks, increasingly depends on cyber-enabled sensing, communication, automation, and data-driven decision-making.',
+    'While these technologies improve mobility, safety, efficiency, and situational awareness, they also introduce new cybersecurity risks that can affect sensitive information, transportation operations, public safety, supply chains, and the movement of people and goods. In response to these challenges, CYBER-CARE was funded in 2023 by the U.S. Department of Transportation as a Tier 1 University Transportation Center focused on reducing transportation cybersecurity risks.',
+    'The center brings together transportation and cybersecurity expertise to address large-scale cyberattacks, hybrid threats, and vulnerabilities across transportation infrastructure and CAV systems. The consortium includes the University of Houston, Embry-Riddle Aeronautical University, Rice University, Texas A&M University–Corpus Christi, University of Cincinnati, and University of Hawai\'i at Manoa, supported by a $10 million award during 2023–2028.'
+  ],
+  objectives: [
+    'Develop foundational knowledge and analytical methods to strengthen the cybersecurity and resilience of transportation systems.',
+    'Investigate cyber risks across wireless and wired access points in vehicles, infrastructure, ATMS, CAVs, and cloud-connected transportation environments.',
+    'Support vulnerability identification, cyberattack consequence modeling, classifier-aware defense, and practical countermeasure development.',
+    'Build educational programs and workforce-development pathways to address the national shortage of transportation cybersecurity professionals.',
+    'Enable technology-transfer activities that connect research outcomes to transportation agencies and industry stakeholders.'
+  ],
+  methodology: [
+    'CYBER-CARE employs a comprehensive, multilayered research approach that spans threat modeling, vulnerability analysis, attack simulation, and defense mechanism design across the full transportation cybersecurity stack — from in-vehicle communication protocols to cloud-connected traffic management systems.',
+    'The TAMU–Corpus Christi site focuses on AI-driven anomaly detection and privacy-preserving defense mechanisms for CAV platoon communication. Testbeds using software-defined vehicles, hardware-in-the-loop simulators, and network emulators allow high-fidelity attack injection and defense evaluation under realistic traffic scenarios.',
+    'Educational and workforce development activities include curriculum development, student research exchanges across consortium universities, and industry internship programs designed to prepare the next generation of transportation cybersecurity professionals.'
+  ],
+  publications: [
+    { title: 'Survey of Cybersecurity Threats and Defenses in Intelligent Transportation Systems', authors: 'M. Sookhak et al.', venue: 'IEEE Access, 2024', url: '#' }
+  ]
+},
+
+'cacc': {
+  title: 'U.S. DoT: Real-Time Policy Enforcement Management for Cooperative Adaptive Cruise Control',
+  funder: 'U.S. Department of Transportation',
+  logo: 'image/logo 5.png',
+  image: 'image/project 5.png',
+  chips: [
+    { icon: '🚘', label: 'CACC Platoons' },
+    { icon: '⛓️', label: 'Blockchain' },
+    { icon: '🤖', label: 'Reinforcement Learning' },
+    { icon: '🔒', label: 'Policy Enforcement' }
+  ],
+  overview: [
+    'Cooperative Adaptive Cruise Control (CACC) is an important technology for connected and automated vehicles because it can improve traffic flow, reduce congestion, enhance roadway safety, and support more energy-efficient transportation. CACC systems rely on coordinated vehicle behavior, vehicle-to-vehicle communication, and platoon management strategies to maintain safe and efficient driving conditions.',
+    'However, many existing CACC approaches assume that participating vehicles and drivers will follow rational and cooperative behavior, which is not always realistic in real-world traffic environments. Uncertain driver behavior, decentralized decision-making, communication delays, privacy concerns, and the lack of effective policy-enforcement mechanisms create major challenges for safe and trustworthy platoon management.',
+    'The principal objective of this project is to develop a real-time, decentralized policy-enforcement framework for CACC using blockchain technology, smart contracts, and artificial intelligence to improve the security, safety, transparency, and energy efficiency of cooperative vehicle platoons.'
+  ],
+  objectives: [
+    'Design blockchain-based algorithms and models for decentralized platoon management and policy enforcement in CACC systems.',
+    'Develop real-time decision-making and data-analysis methods using machine learning, game theory, multi-agent systems, and reinforcement learning to detect policy conflicts and support adaptive control.',
+    'Evaluate the proposed algorithms through simulation and a digital twin-based testbed for CACC-equipped vehicles.',
+    'Support the broader transportation cybersecurity mission of CYBER-CARE by addressing trust and compliance challenges in cooperative driving.'
+  ],
+  methodology: [
+    'The policy-enforcement framework encodes platoon formation rules, spacing policies, and safety constraints as smart contracts on a permissioned blockchain, enabling verifiable and tamper-resistant enforcement without relying on centralized trust. Each vehicle participates in a distributed ledger that records compliance events and triggers automated interventions when violations are detected.',
+    'Real-time decision-making is handled by a multi-agent reinforcement learning system in which each vehicle learns adaptive control policies that jointly optimize safety, throughput, and energy consumption while remaining compliant with enforced policies. Game-theoretic mechanisms model strategic vehicle behavior and non-cooperative drivers.',
+    'A digital twin testbed replicating real CACC communication stacks and vehicle dynamics enables high-fidelity evaluation of the proposed framework under diverse traffic scenarios, communication delays, and adversarial behavior patterns.'
+  ],
+  publications: [
+    { title: 'Blockchain-Enabled Decentralized Policy Enforcement for CACC Platoon Management', authors: 'M. Sookhak et al.', venue: 'IEEE Transactions on Intelligent Transportation Systems, 2025 (under review)', url: '#' }
+  ]
+},
+
+'secure-vision': {
+  title: 'U.S. DoT CYBER-CARE: Secure Vision — A Privacy-Preserving Image-to-Text Framework for Connected and Autonomous Vehicles',
+  funder: 'U.S. Department of Transportation / CYBER-CARE',
+  logo: 'image/logo 6.png',
+  image: 'image/project 6.png',
+  chips: [
+    { icon: '👁️', label: 'Computer Vision' },
+    { icon: '🔐', label: 'Privacy-Preserving' },
+    { icon: '📝', label: 'Image-to-Text' },
+    { icon: '🚦', label: 'Traffic AI' }
+  ],
+  overview: [
+    'Modern intelligent transportation systems increasingly rely on roadside cameras, AI-enabled traffic monitoring, and visual sensing to improve roadway safety, congestion management, enforcement, and connected and autonomous vehicle operations. However, the capture, storage, and transmission of raw traffic images can expose sensitive information such as vehicle interiors, drivers, passengers, pedestrians, and other identifiable visual details.',
+    'Existing privacy-preserving techniques, including anonymization, differential privacy, federated learning, and homomorphic encryption, often introduce tradeoffs related to computational overhead, reduced accuracy, synchronization complexity, or limited contextual understanding. These limitations create a critical need for transportation AI systems that preserve the operational value of visual data while minimizing exposure of sensitive image content.',
+    'The principal objective of this project is to develop Secure Vision, a privacy-preserving image-to-text framework for connected and autonomous vehicle environments. The project transforms transportation camera imagery into descriptive text that preserves scene-level utility while reducing reliance on raw visual data.'
+  ],
+  objectives: [
+    'Develop a customized vision-language model for object detection, spatial relationship extraction, structured scene understanding, and descriptive text generation.',
+    'Design a feedback-based reinforcement learning framework for hierarchical prompt selection, dynamic prompt generation, and retrieval-augmented refinement.',
+    'Improve privacy and reduce data sensitivity in transportation AI systems.',
+    'Support trustworthy AI-enabled transportation infrastructure by generating accurate, context-aware, and privacy-safe textual descriptions of traffic scenes.'
+  ],
+  methodology: [
+    'The vision-language model is built on a fine-tuned transformer encoder-decoder architecture trained on a curated dataset of traffic scene images paired with privacy-safe textual annotations. Object detection modules identify and classify traffic participants, roadway features, and infrastructure elements, while spatial relationship extraction encodes geometric and contextual scene structure into structured text.',
+    'A reinforcement learning agent learns hierarchical prompt selection policies that balance scene description completeness against privacy risk. The agent receives reward signals based on downstream task accuracy and a privacy risk score derived from an independent privacy auditing module, ensuring that generated text descriptions support traffic management tasks without exposing personally identifiable information.',
+    'System evaluation uses held-out traffic camera footage with manually annotated privacy-risk labels, measuring downstream task accuracy, privacy leakage rates, and computational efficiency relative to raw-image baselines.'
+  ],
+  publications: [
+    { title: 'Secure Vision: Privacy-Preserving Traffic Scene Understanding via Image-to-Text Transformation', authors: 'M. Sookhak et al.', venue: 'IEEE Transactions on Intelligent Transportation Systems, 2025 (under review)', url: '#' }
+  ]
+},
+
+'usda-reeu': {
+  title: 'USDA–NIFA REEU: Developing the Workforce for Next-Generation Agriculture',
+  funder: 'USDA–NIFA',
+  logo: 'image/logo 7.png',
+  image: 'image/project 7.png',
+  chips: [
+    { icon: '🌾', label: 'Smart Farming' },
+    { icon: '📡', label: 'IoT & UAS' },
+    { icon: '🗺️', label: 'Geospatial Analytics' },
+    { icon: '🎓', label: 'Workforce Development' }
+  ],
+  overview: [
+    'Smart farming is becoming central to sustainable agriculture by integrating innovative technologies such as the Internet of Things (IoT), unmanned aircraft systems (UAS), artificial intelligence, geospatial data analytics, and crop science. These technologies can improve agricultural productivity, environmental resilience, and data-driven decision-making.',
+    'However, the current agricultural workforce has limited access to science-based training and hands-on experience with these emerging tools. This USDA–NIFA REEU project, led by Texas A&M University–Corpus Christi in collaboration with the Texas A&M AgriLife Research and Extension Center at Corpus Christi, aims to prepare undergraduate students for careers and graduate study in next-generation agriculture.',
+    'The principal objective is to provide undergraduate research and extension experiences that develop students\' technical skills in innovative agricultural technologies. The program supports 40 students over five years, with eight students per year participating in a 25-week experience that includes virtual seminars, short courses, hands-on research, summer internships, extension activities, professional development, field trips, and conference presentations.'
+  ],
+  objectives: [
+    'Develop students\' knowledge and skills in IoT, UAS, and geospatial data analytics for smart farming applications.',
+    'Provide extension experience and professional development through government agencies, industry partners, and county extension agents.',
+    'Inspire students, especially Hispanics and women in STEM and agriculture fields, to pursue graduate study and enter the agricultural workforce.',
+    'Support 40 undergraduate students over five years through a comprehensive 25-week experiential learning program.'
+  ],
+  methodology: [
+    'The program combines virtual seminars and short courses that introduce foundational concepts in IoT sensor networks, UAS flight operations, geospatial data processing, and precision agriculture with hands-on laboratory and field research experiences. Students work directly on active research projects at TAMU–CC and the AgriLife Extension Center.',
+    'Summer internships place students with agricultural technology companies, government agencies, and county extension offices to bridge academic learning with professional practice. Each cohort participates in extension activities including community outreach and farmer education workshops, building communication and applied problem-solving skills.',
+    'Assessment uses pre/post knowledge assessments, research deliverables, internship supervisor evaluations, and longitudinal tracking of graduate school enrollment and workforce entry to measure program outcomes and guide continuous improvement.'
+  ],
+  publications: [
+    { title: 'Experiential Learning in Smart Agriculture: Outcomes of a Multi-Year REEU Program', authors: 'M. Sookhak et al.', venue: 'Journal of Agricultural Education, 2025', url: '#' }
+  ]
+},
+
+'skyshield': {
+  title: 'TAMUCC–Autonomy Research Institute: SkyShield — Security-Enhanced ORAN with UAV Edge Intelligence for CAVs',
+  funder: 'TAMUCC Autonomy Research Institute',
+  logo: 'image/logo 8.png',
+  image: 'image/project 8.png',
+  chips: [
+    { icon: '🛡️', label: 'O-RAN Security' },
+    { icon: '🚁', label: 'UAV Edge' },
+    { icon: '🔍', label: 'Intrusion Detection' },
+    { icon: '🚗', label: 'CAV Networks' }
+  ],
+  overview: [
+    'Connected autonomous vehicle networks require secure, reliable, and low-latency communication to support safety-critical applications such as collision avoidance, traffic coordination, computation offloading, and emergency response. Vehicular Edge Computing (VEC) can bring computation closer to vehicles, but current infrastructure remains limited by fixed roadside units, coverage gaps, congestion hotspots, and vulnerability to cyberattacks.',
+    'These challenges become more severe in highly dynamic traffic environments, peak-demand periods, urban areas with signal blockage, and disaster-affected scenarios. Recent advances in Open Radio Access Networks (O-RAN), UAV-assisted communication, multi-access edge computing, and AI-driven cybersecurity create an opportunity to build flexible and programmable vehicular networks that can adapt to changing communication, computation, and security requirements.',
+    'The principal objective is to develop SkyShield, a security-enhanced O-RAN architecture with UAV-assisted edge intelligence for autonomous vehicle networks, integrating UAVs as flying roadside units, O-RAN intelligent control, MEC-enabled roadside infrastructure, and AI-driven intrusion detection.'
+  ],
+  objectives: [
+    'Design an O-RAN-enabled architecture for UAV-assisted vehicular edge computing (VEC).',
+    'Develop lightweight xApp-based intrusion detection for near-real-time threat monitoring at the O-RAN RIC.',
+    'Design rApp-based historical anomaly analysis and policy adaptation for long-term cyber resilience.',
+    'Develop hierarchical UAV trajectory planning and computation-offloading strategies to balance coverage, latency, and energy efficiency.',
+    'Create testbed resources for research, education, and student training in secure intelligent transportation systems.'
+  ],
+  methodology: [
+    'SkyShield builds on the O-RAN software community (O-RAN SC) stack, deploying near-RT RIC xApps for lightweight intrusion detection using federated anomaly detection models trained across distributed vehicular nodes. UAVs are integrated as mobile xApp-capable edge units that can be dynamically repositioned to fill coverage gaps or reinforce security monitoring in high-risk zones.',
+    'The non-RT RIC hosts rApps performing historical traffic and security pattern analysis, feeding policy updates to xApps and UAV trajectory controllers. A hierarchical offloading framework allocates computation tasks between onboard vehicle processors, UAV edge nodes, and fixed roadside MEC servers based on task latency requirements, link quality, and security risk scores.',
+    'A hardware-in-the-loop testbed integrates commercial UAV platforms, software-defined radios implementing O-RAN fronthaul, and automotive edge computing units to evaluate SkyShield under realistic vehicular mobility, communication conditions, and simulated cyberattack scenarios.'
+  ],
+  publications: [
+    { title: 'SkyShield: UAV-Assisted O-RAN Security for Autonomous Vehicle Networks', authors: 'M. Sookhak et al.', venue: 'IEEE Network Magazine, 2025 (under review)', url: '#' }
+  ]
+},
+
+'aequih': {
+  title: 'NIH–PAIR: AEQUIH — Advancing Equitable AI for High-Risk Mental Health Challenges Among Hispanic Youth',
+  funder: 'NIH–PAIR Program',
+  logo: 'image/logo 9.png',
+  image: 'image/project 9.png',
+  chips: [
+    { icon: '🧠', label: 'Mental Health AI' },
+    { icon: '🤝', label: 'Health Equity' },
+    { icon: '🔐', label: 'Privacy-Preserving' },
+    { icon: '📊', label: 'Hispanic Youth' }
+  ],
+  overview: [
+    'Mental health challenges among Hispanic youth remain a significant public health concern, with disparities shaped by cultural, linguistic, geographic, socioeconomic, and healthcare-access barriers. These challenges can delay diagnosis, limit access to timely intervention, and contribute to untreated or undertreated mental health conditions.',
+    'Although artificial intelligence and machine learning have shown promise for early detection and risk prediction, many existing models do not adequately account for culturally sensitive, demographically relevant, and geographically meaningful factors that influence mental health outcomes in Hispanic communities. In addition, centralized AI systems can raise privacy and security concerns when applied to sensitive health data, limiting their suitability for equity-focused applications.',
+    'The principal objective of the AEQUIH project is to develop an equitable AI/ML research and education framework for identifying high-risk mental health challenges among Hispanic youth, supporting early identification, timely intervention, and improved health outcomes while addressing disparities in mental healthcare access and delivery.'
+  ],
+  objectives: [
+    'Develop culturally aware AI/ML models integrating demographic, geographic, and sociocultural features relevant to Hispanic youth mental health.',
+    'Design privacy-preserving data analysis methods suitable for sensitive health data in community settings.',
+    'Advance trustworthy AI methods that reduce health disparities and promote equitable mental healthcare for underserved communities.',
+    'Support the development of a diverse, equitable, and inclusive AI/ML workforce through transdisciplinary health-equity research.',
+    'Engage undergraduate, graduate, doctoral, postdoctoral, and faculty researchers across disciplines in collaborative mental health AI research.'
+  ],
+  methodology: [
+    'The project develops culturally aware machine learning pipelines that incorporate structured clinical data, social determinants of health, and geospatial features derived from community health databases. Feature engineering methods are designed to capture culturally relevant risk factors, including language barriers, immigration stress, and community resource availability.',
+    'Privacy-preserving federated learning architectures allow model training across distributed health data sources — including community health centers and school-based health programs — without centralizing sensitive patient records. Differential privacy mechanisms provide formal privacy guarantees while preserving model utility.',
+    'Model fairness is evaluated using disaggregated performance metrics across demographic subgroups, with bias mitigation techniques including reweighting, adversarial debiasing, and post-processing calibration applied to ensure equitable prediction performance across youth populations with varying levels of healthcare access.'
+  ],
+  publications: [
+    { title: 'Equitable AI for Mental Health Risk Prediction in Hispanic Youth Communities', authors: 'M. Sookhak et al.', venue: 'NPJ Digital Medicine, 2025 (under review)', url: '#' }
+  ]
+},
+
+'txsmart': {
+  title: 'TGLO–CMP: TXSmart and Self-Sustaining Early Warning Systems for Coastal Flooding',
+  funder: 'Texas General Land Office (TGLO–CMP)',
+  logo: 'image/logo 10.png',
+  image: 'image/project 10.png',
+  chips: [
+    { icon: '🌊', label: 'Coastal Flooding' },
+    { icon: '📡', label: 'IoT Sensing' },
+    { icon: '⚡', label: 'Energy Harvesting' },
+    { icon: '🤖', label: 'TinyML' }
+  ],
+  overview: [
+    'Coastal communities are increasingly exposed to severe storms, storm surge, and flooding events that can threaten public safety, infrastructure, transportation, and local economies. Existing flood prewarning systems often rely heavily on satellite-based weather forecasts, which may not provide sufficiently detailed local environmental information to accurately predict flood paths and risk levels.',
+    'This project addresses this limitation by developing a smart and self-sustaining early-warning system for coastal flooding that integrates Tiny Machine Learning (TinyML), energy-harvesting-powered Internet of Things (IoT) devices, multimodal environmental sensing, and real-time communication. The system is designed to support sustainable, accurate, and localized monitoring, prediction, and prewarning for coastal communities.',
+    'The principal objective is to develop intelligent sensing modules and a two-stage deep-learning framework for real-time flood-risk evaluation and path prediction, deployed and tested in Nueces County to provide community leaders with online access to early flood warnings and relevant sensing information.'
+  ],
+  objectives: [
+    'Design sensing modules integrating environmental sensors, microcontrollers, energy harvesting, low-power communication, and LoRaWAN components.',
+    'Develop local TinyML models for in-situ flood-risk evaluation and global deep-learning models at a remote monitoring center for comprehensive risk validation and flood-path prediction.',
+    'Deploy and test the prewarning system in Nueces County for at least six months to collect sensing data, evaluate performance, and refine the system.',
+    'Prepare technical reports and implementation guidance for adoption by coastal community emergency managers and planners.'
+  ],
+  methodology: [
+    'Each sensing node integrates a microcontroller with on-device TinyML inference capability, water level sensors, rain gauges, atmospheric pressure sensors, and energy harvesting modules (solar and piezoelectric) with supercapacitor energy storage. Low-power LoRaWAN radios transmit compressed sensing data and local risk assessments to a central monitoring server.',
+    'A two-stage deep learning pipeline first runs lightweight TinyML flood-risk classifiers on-device to generate binary risk alerts with minimal latency, then aggregates multi-node readings at the remote monitoring center where a global spatiotemporal LSTM model performs flood-path prediction and severity estimation over a 6-hour prediction horizon.',
+    'The system is deployed across a network of sites in Nueces County selected to cover diverse coastal topographies and flood-prone zones. Field performance is validated against NOAA tide gauge records and post-event field surveys, with system reliability and communication robustness assessed under storm conditions.'
+  ],
+  publications: [
+    { title: 'TinyML-Powered Self-Sustaining IoT Nodes for Real-Time Coastal Flood Risk Assessment', authors: 'M. Sookhak et al.', venue: 'IEEE Internet of Things Journal, 2025 (under review)', url: '#' }
+  ]
+}
+
+};
+
+function chip(c) {
+  return `<span class="hero-chip">${c.icon} ${c.label}</span>`;
+}
+
+function render(id) {
+  const p = PROJECTS[id];
+  if (!p) { document.getElementById('hero-title').textContent = 'Project not found.'; return; }
+
+  document.title = p.title + ' | CIM Lab';
+  document.getElementById('bc-title').textContent = p.title.length > 60 ? p.title.slice(0, 57) + '…' : p.title;
+
+  // Hero bg
+  document.getElementById('hero-bg').style.backgroundImage = `url('${p.image}')`;
+
+  // Hero content
+  document.getElementById('hero-logo-img').src = p.logo;
+  document.getElementById('hero-logo-img').alt = p.funder;
+  document.getElementById('hero-funder').textContent = p.funder;
+  document.getElementById('hero-title').textContent = p.title;
+  document.getElementById('hero-chips').innerHTML = p.chips.map(chip).join('');
+
+  // Project image in overview card
+  const imgEl = document.getElementById('project-img');
+  imgEl.src = p.image;
+  imgEl.alt = p.title;
+
+  // Overview
+  document.getElementById('overview').innerHTML = p.overview.map(t => `<p>${t}</p>`).join('');
+
+  // Objectives
+  document.getElementById('objectives').innerHTML = p.objectives.map((o, i) =>
+    `<li><div class="obj-num">${i + 1}</div><span>${o}</span></li>`
+  ).join('');
+
+  // Methodology
+  document.getElementById('methodology').innerHTML = p.methodology.map(t => `<p>${t}</p>`).join('');
+
+  // Publications
+  document.getElementById('publications').innerHTML = p.publications.map(pub => `
+    <div class="pub-item">
+      <div class="pub-title">${pub.title}</div>
+      <div class="pub-authors">${pub.authors}</div>
+      <div class="pub-venue">
+        <span>${pub.venue}</span>
+        <a class="pub-link" href="${pub.url}" target="_blank">${SVG_EXT} View</a>
+      </div>
+    </div>`).join('');
+}
+
+const id = new URLSearchParams(window.location.search).get('id') || 'nsf-career';
+render(id);
+</script>
+</body>
+</html>
