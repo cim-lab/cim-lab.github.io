@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open Positions | CIM Lab</title>
+  <meta name="description" content="Open Ph.D., postdoctoral, and research positions at the Cognitive Intelligence Motion (CIM) Lab, Texas A&M University-Corpus Christi." />
+
+  <!-- If served from a subfolder (e.g., GitHub Pages project site), set to "/your-repo/". Keep "/" if at domain root. -->
+  <meta name="site-base" content="/">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-elev: #f4f6fb;
+      --card: #ffffff;
+      --text: #212121;
+      --muted: #555;
+      --brand: #1976d2;        /* bright blue */
+      --brand-2: #f50057;      /* pink accent */
+      --accent: #ff9800;       /* orange accent */
+      --border: #e6e8ee;
+      --ring: rgba(25,118,210,.35);
+      --shadow: 0 6px 20px rgba(0,0,0,.15);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+    }
+    html, body{ height: 100%; }
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text); background: linear-gradient(180deg, #e3f2fd 0%, #fff 100%);
+    }
+    a{ color: inherit; text-decoration: none; }
+    .container{ width: min(1200px, 92%); margin-inline:auto; }
+
+    /* Shared Header */
+    header.site-header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px);
+      background: #ffffffd9;
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-wrap{ display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .brand-logo{ width:42px; height:42px; border-radius: 12px; background:
+      linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: var(--shadow);
+    }
+    .brand-name{ font-weight: 700; letter-spacing: .3px; }
+
+    nav ul{ list-style: none; display:flex; gap: 8px; margin:0; padding:0; }
+    nav a{ padding:10px 14px; border-radius: 10px; color: var(--text); font-weight: 600; }
+    nav a:hover, nav a[aria-current="page"]{
+      color: var(--brand); background: rgba(25,118,210,.12);
+    }
+
+    /* Page header */
+    main{ padding: 24px 0 40px; }
+    .page-title{ margin: 6px 0 8px; }
+    .page-title h1{ margin:0 0 8px; font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); }
+    .page-title p.lead{ margin:0; color: var(--muted); max-width: 760px; line-height: 1.6; }
+
+    .pill-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 18px; }
+    .pill{
+      font-size:.78rem; font-weight:700; color:#fff;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      padding:6px 12px; border-radius: 999px;
+    }
+    .pill.open{ background: linear-gradient(90deg, #2e7d32, #66bb6a); }
+    .pill.closed{ background: #9e9e9e; }
+
+    /* Position cards */
+    .positions-grid{ margin-top: 30px; display:grid; gap: 18px; }
+    .position-card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: none;
+      transition: box-shadow .15s ease, transform .15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .position-card:hover{ outline: 1px solid var(--brand); box-shadow: var(--shadow); }
+    .position-top{ display:flex; align-items:flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    .position-title{ margin:0; font-size: 1.2rem; }
+    .position-meta{ margin: 6px 0 0; color: var(--muted); font-size: .92rem; }
+    .status-tag{
+      font-size:.72rem; font-weight:700; color:#fff;
+      padding:6px 10px; border-radius: 999px; white-space: nowrap;
+    }
+    .status-tag.open{ background: linear-gradient(90deg, #2e7d32, #66bb6a); }
+    .status-tag.rolling{ background: linear-gradient(90deg, var(--brand), #4fc3f7); }
+
+    .position-desc{ margin: 14px 0; color:#333; line-height:1.6; }
+    .position-reqs{ margin: 10px 0 0; padding-left: 20px; color:#333; line-height:1.7; }
+    .position-reqs li{ margin-bottom: 2px; }
+
+    .position-actions{ margin-top: 18px; display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{ display:inline-flex; align-items:center; gap:10px; padding: 10px 16px; border-radius: 12px; font-weight: 700; background: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%); color:#fff; border: 0; cursor:pointer; box-shadow: var(--shadow); }
+    .btn.outline{ background: #fff; color: var(--brand); border: 1.5px solid var(--brand); box-shadow: none; }
+    .btn.outline:hover{ background: rgba(25,118,210,.08); }
+
+    /* How to apply */
+    .apply-section{
+      margin-top: 44px; padding: 26px;
+      background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    }
+    .apply-section h2{ margin: 0 0 10px; font-size: 1.3rem; }
+    .apply-steps{ margin: 14px 0 0; padding-left: 20px; color:#333; line-height:1.8; }
+    .apply-steps li{ margin-bottom: 4px; }
+    .apply-note{ margin-top:14px; color: var(--muted); font-size:.92rem; }
+
+    /* General/no-open-position note */
+    .note-card{
+      margin-top: 18px; padding: 16px 18px; border-radius: var(--radius-md);
+      background: #fff8e1; border: 1px solid #ffe0a3; color:#5c4500; font-size:.95rem; line-height:1.6;
+    }
+
+    /* Footer */
+    footer.site-footer{
+      background: #f4f6fb;
+      border-top: 1px solid #ddd; padding: 30px 0; margin-top: 20px;
+    }
+    .footer-grid{ display:grid; grid-template-columns: 2.2fr 1.2fr 1.2fr; gap: 18px; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+    .footer-card{ background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+    .footer-card h4{ margin: 0 0 10px; }
+    .muted{ color: var(--muted); }
+    .small{ font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container" id="main-content">
+    <div class="page-title">
+      <h1>Open Positions</h1>
+      <p class="lead">The Cognitive Intelligence Motion (CIM) Lab, led by Professor Mehdi Sookhak, is always looking for motivated
+        students and researchers interested in AI, intelligent transportation systems, geospatial intelligence, and
+        privacy-preserving machine learning. Explore current openings below.</p>
+      <div class="pill-row">
+        <span class="pill open">Ph.D. — Open for Spring 2027</span>
+        <span class="pill open">Postdoc — Open</span>
+        <span class="pill closed">Undergraduate RA — Rolling</span>
+      </div>
+    </div>
+
+    <div class="positions-grid" id="positionsGrid">
+      <!-- Ph.D. -->
+      <div class="position-card">
+        <div class="position-top">
+          <div>
+            <h3 class="position-title">Funded Ph.D. Position — AI-Enabled Wireless &amp; Autonomous Systems</h3>
+            <p class="position-meta">Collective Intelligence in Motion (CIM) Lab · Texas A&amp;M University–Corpus Christi · Starting Spring 2027</p>
+          </div>
+          <span class="status-tag open">Open</span>
+        </div>
+        <p class="position-desc">
+          We are recruiting a highly motivated Ph.D. student to join the lab starting in Spring 2027. The student
+          will work on AI-enabled wireless and autonomous systems, including emerging directions such as
+          wave-domain computing and Stacked Intelligent Metasurfaces (SIM).
+        </p>
+        <p class="position-meta" style="margin-top:14px; font-weight:700; color:var(--text);">Core Research Areas</p>
+        <ul class="position-reqs">
+          <li>UAV-assisted communications &amp; connected/autonomous vehicles</li>
+          <li>Intelligent metasurfaces (RIS/SIM)</li>
+          <li>Edge computing &amp; wireless resource allocation</li>
+          <li>Optimization &amp; reinforcement learning</li>
+        </ul>
+        <p class="position-meta" style="margin-top:16px; font-weight:700; color:var(--text);">Ideal Candidate</p>
+        <ul class="position-reqs">
+          <li>B.S. or M.S. in CS, EE, CE, Telecommunications, or a related field</li>
+          <li>Strong foundation in linear algebra, probability, calculus, and optimization</li>
+          <li>Strong programming skills in Python; MATLAB/C++ is a plus</li>
+          <li>Background in machine learning; reinforcement learning/DRL is a strong plus</li>
+          <li>Knowledge of wireless communications, networking, or signal processing</li>
+          <li>Interest in working with UAVs, edge-AI platforms, simulation, and experimental systems</li>
+          <li>Strong research potential and ability to learn independently</li>
+        </ul>
+        <p class="position-meta" style="margin-top:16px;">
+          <strong style="color:var(--text);">How to Apply:</strong> Email
+          <a href="mailto:mehdi.sookhak@tamucc.edu" style="color:var(--brand); font-weight:600;">mehdi.sookhak@tamucc.edu</a>
+          with the subject "Ph.D. Application – CIM Lab – Spring 2027", including (1) your CV and academic transcripts,
+          (2) a brief description of your research interests and relevant experience, and (3) relevant publications,
+          GitHub, or project links, if available.
+        </p>
+        <div class="position-actions">
+          <a class="btn" href="mailto:mehdi.sookhak@tamucc.edu?subject=Ph.D.%20Application%20%E2%80%93%20CIM%20Lab%20%E2%80%93%20Spring%202027">Apply by Email</a>
+          <a class="btn outline" href="https://www.tamucc.edu/admissions/graduate-students/index.php" target="_blank" rel="noopener">Graduate Admissions</a>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="note-card">
+      Don't see a position that fits? We're happy to hear from strong candidates at any level. Feel free to reach
+      out with your CV even if there isn't a matching opening listed above.
+    </div>
+
+    <section class="apply-section" id="apply">
+      <h2>How to Apply</h2>
+      <ol class="apply-steps">
+        <li>Email Prof. Sookhak at <a href="mailto:sookhak.mehdi@tamucc.edu" style="color:var(--brand); font-weight:600;">sookhak.mehdi@tamucc.edu</a> with the position title in the subject line.</li>
+        <li>Attach your CV/resume, a brief statement of research interests, and (for Ph.D./postdoc applicants) unofficial transcripts.</li>
+        <li>Include contact information for 2–3 references.</li>
+        <li>Ph.D. applicants should also apply to the TAMUCC graduate program in parallel with the College of Science and Engineering.</li>
+      </ol>
+      <p class="apply-note">Applications are reviewed on a rolling basis. Due to volume, only shortlisted candidates may receive a direct response.</p>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    function renderHeader(targetId){
+      const el = document.getElementById(targetId);
+      const meta = document.querySelector('meta[name="site-base"]');
+      const BASE = (meta && meta.getAttribute('content')) ? meta.getAttribute('content') : '/';
+      const base = BASE.endsWith('/') ? BASE : BASE + '/';
+      el.innerHTML = `
+        <header class="site-header">
+          <div class="container nav-wrap">
+            <a class="brand" href="${base}index.html"><div class="brand-logo"></div><div class="brand-name">Cognitive Intelligence Motion (CIM) Lab</div></a>
+            <nav><ul>
+                <li><a href="${base}index.html">Home</a></li>
+                <li><a href="${base}publications4.html">Publications</a></li>
+                <li><a href="${base}projects.html">Projects</a></li>
+                <li><a href="${base}team.html">Team</a></li>
+                <li><a href="${base}positions.html" aria-current="page">Positions</a></li>
+            </ul></nav>
+          </div>
+        </header>`;
+    }
+    function renderFooter(targetId){
+      const year = new Date().getFullYear();
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <footer class="site-footer" id="contact">
+          <div class="container footer-grid">
+            <div class="footer-card"><h4>About the Lab</h4><p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p></div>
+            <div class="footer-card"><h4>Contact</h4><p class="small">Prof. Mehdi Sookhak<br>Department of Computer Science<br>Texas A&M University of Corpus Christi<br>Email: <a href="mailto:sookhak.mehdi@tamucc.edu">sookhak.mehdi@tamucc.edu</a></p></div>
+            <div class="footer-card"><h4>Find Us</h4><p class="small muted">Office: Room 420<br>Lab: Suite 210</p><p class="small">© ${year} CIM Lab</p></div>
+          </div>
+        </footer>`;
+    }
+    renderHeader('site-header');
+    renderFooter('site-footer');
+  </script>
+</body>
+</html>
