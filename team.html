@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Team | CIM Lab</title>
+  <meta name="description" content="Meet the members of the Cognitive Intelligence Motion (CIM) Lab at Texas A&M University-Corpus Christi." />
+
+  <!-- If served from a subfolder (e.g., GitHub Pages project site), set to "/your-repo/". Keep "/" if at domain root. -->
+  <meta name="site-base" content="/">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-elev: #f4f6fb;
+      --card: #ffffff;
+      --text: #212121;
+      --muted: #555;
+      --brand: #1976d2;        /* bright blue */
+      --brand-2: #f50057;      /* pink accent */
+      --accent: #ff9800;       /* orange accent */
+      --border: #e6e8ee;
+      --ring: rgba(25,118,210,.35);
+      --shadow: 0 6px 20px rgba(0,0,0,.15);
+      --radius-xl: 18px;
+      --radius-lg: 14px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+    }
+    html, body{ height: 100%; }
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text); background: linear-gradient(180deg, #e3f2fd 0%, #fff 100%);
+    }
+    a{ color: inherit; text-decoration: none; }
+    .container{ width: min(1200px, 92%); margin-inline:auto; }
+
+    /* Shared Header */
+    header.site-header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(10px);
+      background: #ffffffd9;
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-wrap{ display:flex; align-items:center; justify-content: space-between; padding: 14px 0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
+    .brand-logo{ width:42px; height:42px; border-radius: 12px; background:
+      linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: var(--shadow);
+    }
+    .brand-name{ font-weight: 700; letter-spacing: .3px; }
+
+    nav ul{ list-style: none; display:flex; gap: 8px; margin:0; padding:0; }
+    nav a{ padding:10px 14px; border-radius: 10px; color: var(--text); font-weight: 600; }
+    nav a:hover, nav a[aria-current="page"]{
+      color: var(--brand); background: rgba(25,118,210,.12);
+    }
+
+    /* Page header */
+    main{ padding: 24px 0 40px; }
+    .page-title{ margin: 6px 0 8px; }
+    .page-title h1{ margin:0 0 8px; font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); }
+    .page-title p.lead{ margin:0; color: var(--muted); max-width: 760px; line-height: 1.6; }
+
+    .section-label{
+      margin: 34px 0 14px; font-size: .78rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--brand);
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-label::after{ content:''; flex:1; height:1px; background: var(--border); }
+
+    /* PI feature card */
+    .pi-card{
+      display:flex; gap: 24px; align-items:center; flex-wrap: wrap;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl);
+      padding: 24px; box-shadow: var(--shadow);
+    }
+    .pi-photo{
+      width: 140px; height: 140px; border-radius: 50%; flex-shrink: 0; overflow:hidden;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      display:grid; place-items:center; color:#fff; font-weight:700; font-size: 2.4rem;
+      box-shadow: var(--shadow);
+    }
+    .pi-photo img{ width:100%; height:100%; object-fit: cover; }
+    .pi-info h3{ margin:0 0 4px; font-size: 1.4rem; }
+    .pi-info .role{ color: var(--brand); font-weight: 700; font-size: .95rem; margin-bottom: 8px; }
+    .pi-info p.bio{ margin:0; color: var(--muted); max-width: 640px; line-height:1.6; }
+
+    /* Team grid */
+    .team-grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    @media (max-width: 980px){ .team-grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px){ .team-grid{ grid-template-columns: 1fr; } }
+
+    .member-card{
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 20px; display:flex; gap: 16px; align-items:center;
+      transition: box-shadow .15s ease, transform .15s ease;
+    }
+    .member-card:hover{ outline: 1px solid var(--brand); box-shadow: var(--shadow); transform: translateY(-2px); }
+    .member-photo{
+      width: 76px; height: 76px; border-radius: 50%; flex-shrink: 0; overflow:hidden;
+      display:grid; place-items:center; color:#fff; font-weight:700; font-size: 1.3rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,.12);
+    }
+    .member-photo img{ width:100%; height:100%; object-fit: cover; }
+    .member-info h4{ margin:0 0 4px; font-size: 1.02rem; line-height:1.3; }
+    .member-info .role{ margin:0; color: var(--muted); font-size: .86rem; line-height:1.4; }
+
+    /* Footer */
+    footer.site-footer{
+      background: #f4f6fb;
+      border-top: 1px solid #ddd; padding: 30px 0; margin-top: 20px;
+    }
+    .footer-grid{ display:grid; grid-template-columns: 2.2fr 1.2fr 1.2fr; gap: 18px; }
+    @media (max-width: 860px){ .footer-grid{ grid-template-columns: 1fr; } }
+    .footer-card{ background: #ffffff; border: 1px solid #eee; border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+    .footer-card h4{ margin: 0 0 10px; }
+    .muted{ color: var(--muted); }
+    .small{ font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main class="container" id="main-content">
+    <div class="page-title">
+      <h1>Our Team</h1>
+      <p class="lead">Meet the researchers of the Cognitive Intelligence Motion (CIM) Lab at Texas A&amp;M
+        University–Corpus Christi.</p>
+    </div>
+
+    <!-- Principal Investigator -->
+    <div class="section-label">Principal Investigator</div>
+    <div class="pi-card">
+      <div class="pi-photo"><img src="image/team/sookhak.jpg" alt="Photo of Dr. Mehdi Sookhak" onerror="this.parentElement.textContent='MS'"></div>
+      <div class="pi-info">
+        <h3>Associate Prof. Dr. Mehdi Sookhak</h3>
+        <div class="role">Lab Director</div>
+        <p class="bio">Leads the CIM Lab's research on AI-driven intelligent transportation systems, geospatial
+          intelligence, and privacy-preserving machine learning at Texas A&amp;M University–Corpus Christi.</p>
+      </div>
+    </div>
+
+    <!-- Research Leads -->
+    <div class="section-label">Research Leads</div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--brand), var(--brand-2));">
+          <img src="image/team/afzal.jpg" alt="Photo of Dr. Samira Afzal" onerror="this.parentElement.textContent='SA'">
+        </div>
+        <div class="member-info">
+          <h4>Dr. Samira Afzal</h4>
+          <p class="role">Research Team Lead, Post-doctoral</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--brand), var(--brand-2));">
+          <img src="image/team/rezaei.jpg" alt="Photo of Azim Rezaei" onerror="this.parentElement.textContent='AR'">
+        </div>
+        <div class="member-info">
+          <h4>Azim Rezaei</h4>
+          <p class="role">Research Lead, Ph.D. Candidate</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ph.D. Students -->
+    <div class="section-label">Ph.D. Students</div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--accent), var(--brand));">
+          <img src="image/team/zarei.jpg" alt="Photo of Daniel Zarei" onerror="this.parentElement.textContent='DZ'">
+        </div>
+        <div class="member-info">
+          <h4>Daniel Zarei</h4>
+          <p class="role">Ph.D. Student</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--accent), var(--brand));">
+          <img src="image/team/ndagijimana.jpg" alt="Photo of Cyprien Ndagijimana" onerror="this.parentElement.textContent='CN'">
+        </div>
+        <div class="member-info">
+          <h4>Cyprien Ndagijimana</h4>
+          <p class="role">Ph.D. Student</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--accent), var(--brand));">
+          <img src="image/team/nguyen.jpg" alt="Photo of Quan Nguyen" onerror="this.parentElement.textContent='QN'">
+        </div>
+        <div class="member-info">
+          <h4>Quan Nguyen</h4>
+          <p class="role">Ph.D. Student</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--accent), var(--brand));">
+          <img src="image/team/anjum.jpg" alt="Photo of Abdullah Anjum" onerror="this.parentElement.textContent='AA'">
+        </div>
+        <div class="member-info">
+          <h4>Abdullah Anjum</h4>
+          <p class="role">Ph.D. Student</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Undergraduate & Master's Students -->
+    <div class="section-label">Undergraduate &amp; Master's Students</div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--brand-2), var(--accent));">
+          <img src="image/team/patel.jpg" alt="Photo of Raj Atulkumar Patel" onerror="this.parentElement.textContent='RP'">
+        </div>
+        <div class="member-info">
+          <h4>Raj Atulkumar Patel</h4>
+          <p class="role">Undergraduate / Master's Student</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo" style="background: linear-gradient(135deg, var(--brand-2), var(--accent));">
+          <img src="image/team/sandineni.jpg" alt="Photo of Siddhartha Rao Sandineni" onerror="this.parentElement.textContent='SS'">
+        </div>
+        <div class="member-info">
+          <h4>Siddhartha Rao Sandineni</h4>
+          <p class="role">Undergraduate / Master's Student</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    function renderHeader(targetId){
+      const el = document.getElementById(targetId);
+      const meta = document.querySelector('meta[name="site-base"]');
+      const BASE = (meta && meta.getAttribute('content')) ? meta.getAttribute('content') : '/';
+      const base = BASE.endsWith('/') ? BASE : BASE + '/';
+      el.innerHTML = `
+        <header class="site-header">
+          <div class="container nav-wrap">
+            <a class="brand" href="${base}index.html"><div class="brand-logo"></div><div class="brand-name">Cognitive Intelligence Motion (CIM) Lab</div></a>
+            <nav><ul>
+                <li><a href="${base}index.html">Home</a></li>
+                <li><a href="${base}publications4.html">Publications</a></li>
+                <li><a href="${base}projects.html">Projects</a></li>
+                <li><a href="${base}team.html" aria-current="page">Team</a></li>
+                <li><a href="${base}positions.html">Positions</a></li>
+            </ul></nav>
+          </div>
+        </header>`;
+    }
+    function renderFooter(targetId){
+      const year = new Date().getFullYear();
+      const el = document.getElementById(targetId);
+      el.innerHTML = `
+        <footer class="site-footer" id="contact">
+          <div class="container footer-grid">
+            <div class="footer-card"><h4>About the Lab</h4><p class="muted">We study AI systems at the intersection of mobility, geospatial intelligence, and privacy.</p></div>
+            <div class="footer-card"><h4>Contact</h4><p class="small">Prof. Mehdi Sookhak<br>Department of Computer Science<br>Texas A&M University of Corpus Christi<br>Email: <a href="mailto:sookhak.mehdi@tamucc.edu">sookhak.mehdi@tamucc.edu</a></p></div>
+            <div class="footer-card"><h4>Find Us</h4><p class="small muted">Office: Room 420<br>Lab: Suite 210</p><p class="small">© ${year} CIM Lab</p></div>
+          </div>
+        </footer>`;
+    }
+    renderHeader('site-header');
+    renderFooter('site-footer');
+  </script>
+</body>
+</html>
